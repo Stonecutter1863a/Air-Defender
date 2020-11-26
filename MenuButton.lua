@@ -16,6 +16,7 @@
 
 local MenuButton = {}
 
+
 function MenuButton:new (o, a, b)    --constructor
 	o = o or {}
 	setmetatable(o, self)
@@ -30,15 +31,21 @@ function MenuButton:new (o, a, b)    --constructor
 	--o.interface = widget.newButton(opt)
 	
 	function o.ToScene()
-		local composer = require("composer")
-		if (pauseScene == 0) then
-			composer.gotoScene(targetScene)
-		elseif (pauseScene == 1) then
-			composer.showOverlay(targetScene)
-		elseif (pauseScene == 2) then
-			composer.hideOverlay()
+		if not (isPaused == true)then
+			local composer = require("composer")
+			if (pauseScene == 0) then
+				composer.gotoScene(targetScene)
+			elseif (pauseScene == 1) then
+				composer.showOverlay(targetScene)
+				o.isPaused = true
+			elseif (pauseScene == 2) then
+				composer.hideOverlay()
+			end
 		end
 	end
+
+	o.pauseScene = a
+	o.isPaused = false
 
 	o.interface:addEventListener("tap", o.ToScene)
 
@@ -51,9 +58,17 @@ function MenuButton:SetPos(x,y)
 end
 
 function MenuButton:IsPaused()
-	if (pauseScene == 1) then return true
+	print(self.isPaused)
+	if (self.pauseScene == 1) then return self.isPaused
 	else return false
 	end
+end
+
+function MenuButton:Unpause()
+	self.isPaused = false
+end
+function MenuButton:Pause()
+	self.isPaused = true
 end
 
 function MenuButton:Destroy()

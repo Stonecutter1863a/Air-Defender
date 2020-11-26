@@ -48,8 +48,7 @@ function Projectile:GetPosY()
 end
 
 function Projectile:Delete()
-	self.graphic:removeSelf()
-	self.graphic=nil
+	self.graphic:Destroy()
 	for k,l in pairs(self) do
 		l = nil
 	end

@@ -84,9 +84,9 @@ function Combatant:Instakill()
 end
 
 function Combatant:Delete()
-	self.graphic:removeSelf()
+	self.graphic:Destroy()
 	self.graphic=nil
-	for k,l in pairs(self) do
+	for k,l in ipairs(self) do
 		l = nil
 	end
 	self = nil

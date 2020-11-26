@@ -1,7 +1,7 @@
 --[[
-	SettingsScene.lua
+	TitleScene.lua
 	
-	The options menu for Air Defender.
+	The title screen for Air Defender.
 ]]
 
 
@@ -11,7 +11,6 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
 local MenuButton = require("MenuButton")
---local OptionButton = require("OptionButton")
  
 -- "scene:create()"
 function scene:create( event )
@@ -28,9 +27,14 @@ function scene:show( event )
  
    if ( phase == "will" ) then
 
-   		title = MenuButton:new(o, 0, "TitleScene")
-   		title:SetPos(display.contentCenterX, display.contentCenterY + 90)
+   		play = MenuButton:new(o, 2, "GameScene")
+   		play:SetPos(display.contentCenterX, display.contentCenterY - 30)
    
+   		title = MenuButton:new(o, 0, "TitleScene")
+   		title:SetPos(display.contentCenterX, display.contentCenterY + 30)
+		
+		--event.parent:Pause()
+		
    elseif ( phase == "did" ) then
    
    end
@@ -46,7 +50,11 @@ function scene:hide( event )
    
    elseif ( phase == "did" ) then
    
+		event.parent:Unpause()
+   
 	local sceneGroup = self.view
+	play:Destroy()
+	play=nil
 	title:Destroy()
 	title=nil
  
@@ -58,6 +66,8 @@ function scene:destroy( event )
  
 	local sceneGroup = self.view
 	
+	--play:Destroy()
+	--play=nil
 	--title:Destroy()
 	--title=nil
 	

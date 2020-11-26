@@ -30,8 +30,9 @@ function scene:show( event )
    		play = MenuButton:new(o, 0, "GameScene")
    		play:SetPos(display.contentCenterX, display.contentCenterY - 30)
    
-		options = display.newRect(display.contentCenterX, display.contentCenterY + 20, 10,10)
-   
+   		options = MenuButton:new(o, 0, "SettingsScene")
+   		options:SetPos(display.contentCenterX, display.contentCenterY + 30)
+		
    elseif ( phase == "did" ) then
    
    end
@@ -50,7 +51,7 @@ function scene:hide( event )
 	local sceneGroup = self.view
 	play:Destroy()
 	play=nil
-	options:removeSelf()
+	options:Destroy()
 	options=nil
  
    end
@@ -61,10 +62,10 @@ function scene:destroy( event )
  
 	local sceneGroup = self.view
 	
-	play:Destroy()
-	play=nil
-	options:removeSelf()
-	options=nil
+	--play:Destroy()
+	--play=nil
+	--options:Destroy()
+	--options=nil
 	
 end
  

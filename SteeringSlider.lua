@@ -54,7 +54,7 @@ end
 
 function SteeringSlider:Destroy()
 	self.interface:removeSelf()
-	for i, j in pairs(self) do
+	for i, j in ipairs(self) do
 		table.remove(self, i)
 		j = nil
 	end
