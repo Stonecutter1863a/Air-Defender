@@ -41,10 +41,10 @@ function Projectile:Update()
 end
 
 function Projectile:GetPosX()
-	return self.x
+	return self.graphic:GetX()
 end
 function Projectile:GetPosY()
-	return self.y
+	return self.graphic:GetY()
 end
 
 function Projectile:Delete()

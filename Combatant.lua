@@ -14,7 +14,7 @@ function Combatant:new(o)
 	local g = display.newRect(0, 0, 100, 100)
 	g:setFillColor(1,1,1)
 	
-	self = Combatant:new(o,1,false,0,1,1,g)
+	o = Combatant:new(o,1,false,0,1,1,g)
 	
 	return o
 end
@@ -47,6 +47,18 @@ function Combatant:SetPos(x,y)
 	self.graphic:SetX(x)
 	self.graphic:SetY(y)
 end
+function Combatant:GetPosX()
+	return self.graphic:GetX()
+end
+function Combatant:GetPosY()
+	return self.graphic:GetY()
+end
+function Combatant:GetHeight()
+	return self.graphic:GetHeight()
+end
+function Combatant:GetWidth()
+	return self.graphic:GetWidth()
+end
 
 function Combatant:Update()	--## needs to account for graphic heights
 	if(self.isPlayer == true) then
@@ -76,6 +88,9 @@ function Combatant:Damage(amount)
 	self.health = self.health - amount
 	if(self.health <= 0) then
 		self:Instakill()
+		return true
+	else
+		return false
 	end
 end
 
@@ -84,6 +99,7 @@ function Combatant:Instakill()
 end
 
 function Combatant:Delete()
+	print("deleting")
 	self.graphic:Destroy()
 	self.graphic=nil
 	for k,l in ipairs(self) do

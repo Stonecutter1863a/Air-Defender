@@ -20,7 +20,7 @@ local FireButton = require("FireButton")
 local MenuButton = require("MenuButton")
 --local Spawner = require("CombatantSpawner")
 --local Player = require("Player")
---local Enemies = require("Enemies")
+local AI = require("AI")
 local Combatant = require("Combatant")
 local Graphic = require("Graphic")
 
@@ -34,10 +34,12 @@ local spawner
 local player
 local enemies
 local projectiles
+local ai
 
 function Update()
 	--print(pause:IsPaused())
 	if (pause:IsPaused() == false)then
+		gameTime = gameTime + 1
 		playerAvatar:Steer(steering:GetInput())
 		playerAvatar:Update()
 		
@@ -50,15 +52,59 @@ function Update()
 		
 		for i, j in ipairs(projectiles) do
 			j:Update()
-			if(false)then
+			if(
+				j:GetPosX() > display.contentWidth
+				or j:GetPosX() < 0
+				or j:GetPosY() > display.contentHeight
+				or j:GetPosY() < 0
+			)then
+				table.remove(projectiles, i)
 				j:Delete()
-			elseif(false) then
-				j:Delete()
+			else
+				for k,l in ipairs(enemies)do
+					if(
+						j:GetPosY() <= l:GetPosY()+l:GetHeight()
+						and j:GetPosY() >= l:GetPosY()-l:GetHeight()
+						and j:GetPosX() <= l:GetPosX()+l:GetWidth()
+						and j:GetPosX() >= l:GetPosX()-l:GetWidth()
+					)then
+						table.remove(projectiles, i)
+						j:Delete()
+						if (l:Damage(1) == true)then
+							table.remove(enemies, k)
+							table.remove(ai, k)
+						end
+					end
+				end
 			end
 		end
+		
+		for i, j in ipairs(enemies) do
+			if(j == nil)then
+				table.remove(enemies, i)
+				j:Delete()
+				local a = ai[i]
+				table.remove(ai, i)
+				a:Delete()
+			else
+				j:Update()
+				if(
+					j:GetPosX() < 0
+					or j:GetPosY() > display.contentHeight
+					or j:GetPosY() < 0
+				)then
+					table.remove(enemies, i)
+					j:Delete()
+					local a = ai[i]
+					table.remove(ai, i)
+					a:Delete()
+				end
+			end
+		end
+		
 	end
 	if(exiting ~= true)then
-		timer.performWithDelay(framerateControl, Update, 1)
+		timer.performWithDelay(framerateControl, Update, 1, "update")
 	end
 end
 
@@ -103,6 +149,7 @@ function scene:show( event )
    if ( phase == "will" ) then
 		
 	enemies = {}
+	ai = {}
 	projectiles = {}
 	gameTime = 0
 	steering = SteeringSlider:new()
@@ -121,7 +168,14 @@ function scene:show( event )
 	
 	exiting = false
 	paused = false
+	gameTime = 0
 	timer.performWithDelay(framerateControl, Update, 1)
+	
+	g = Graphic:new({},0,0)
+	table.insert(enemies, Combatant:new({},1,false,nil,3,1,g))
+	enemies[1]:SetPos(display.contentWidth-1, display.contentHeight/2)
+	
+	table.insert(ai, AI:new(o,0))
    elseif ( phase == "did" ) then
    
    end
@@ -135,11 +189,20 @@ function scene:hide( event )
  
    if ( phase == "will" ) then
 	exiting = true
+	timer.cancel("update")
    elseif ( phase == "did" ) then
 		fire:Destroy()
 		pause:Destroy()
 		for i,j in ipairs(projectiles) do
 			table.remove(projectiles, i)
+			j:Delete()
+		end
+		for i,j in ipairs(enemies) do
+			table.remove(enemies, i)
+			j:Delete()
+		end
+		for i,j in ipairs(ai) do
+			table.remove(ai, i)
 			j:Delete()
 		end
 		playerAvatar:Delete()

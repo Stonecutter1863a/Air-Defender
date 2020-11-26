@@ -82,6 +82,12 @@ function Graphic:SetY(y)
 		j.y = y
 	end
 end
+function Graphic:GetHeight()
+	return 50
+end
+function Graphic:GetWidth()
+	return 50
+end
 function Graphic:GetRotation()
 	return self.angle
 end
