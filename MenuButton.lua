@@ -58,7 +58,6 @@ function MenuButton:SetPos(x,y)
 end
 
 function MenuButton:IsPaused()
-	print(self.isPaused)
 	if (self.pauseScene == 1) then return self.isPaused
 	else return false
 	end
