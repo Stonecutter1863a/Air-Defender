@@ -17,6 +17,8 @@ local json = require("json")
 local score
 local gameTime
 
+local background
+
 local bestscore
 local besttime
 
@@ -48,6 +50,17 @@ function scene:show( event )
 
 		gameTime = event.params.gametime
 		score = event.params.score
+		settings = event.params.settings
+		
+		if(settings.level == 1)then
+			background = Graphic:new({},0,0,"game1")
+		elseif(settings.level == 2)then
+			background = Graphic:new({},0,0,"game2")
+		else
+			background = Graphic:new({},0,0,"game3")
+		end
+		background:SetX(750)
+		background:SetY(display.contentHeight)
 
    		title = MenuButton:new(o, 0, "TitleScene", Graphic:new({},0,0,"quitbutton"))
    		title:SetPos(display.contentCenterX, display.contentCenterY + 190)
@@ -133,28 +146,28 @@ function scene:show( event )
 		besttimedisplay = display.newText({
 			text=besttimetext,
 			x=display.contentCenterX,
-			y=display.contentCenterY + 28,
+			y=display.contentCenterY - 122,
 			width = display.contentWidth*2/3,
 			align = "left"
 		})
 		bestscoredisplay = display.newText({
 			text=bestscoretext,
 			x=display.contentCenterX,
-			y=display.contentCenterY,
+			y=display.contentCenterY - 150,
 			width = display.contentWidth*2/3,
 			align = "left"
 		})
 		timedisplay = display.newText({
 			text=timetext,
 			x=display.contentCenterX,
-			y=display.contentCenterY - 84,
+			y=display.contentCenterY - 234,
 			width = display.contentWidth*2/3,
 			align = "left"
 		})
 		scoredisplay = display.newText({
 			text=scoretext,
 			x=display.contentCenterX,
-			y=display.contentCenterY - 112,
+			y=display.contentCenterY - 262,
 			width = display.contentWidth*2/3,
 			align = "left"
 		})
@@ -184,6 +197,8 @@ function scene:hide( event )
 	besttimedisplay = nil
 	bestscoredisplay:removeSelf()
 	bestscoredisplay = nil
+	
+	background:Destroy()
  
    end
 end

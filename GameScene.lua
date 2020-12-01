@@ -37,6 +37,7 @@ local projectiles
 local ai
 local score
 local difficulty
+local health
 
 local backdrops
 
@@ -75,6 +76,9 @@ local timerActual
 local scoreDefualtText
 local scoreDefault
 local scoreActual
+local healthDefualtText
+local healthDefault
+local healthActual
 
 function GameOver()
 						local options = {
@@ -82,7 +86,8 @@ function GameOver()
 							time = 200,
 							params = {
 							gametime = gameTime,
-							score = score
+							score = score,
+							settings = settings
 							}
 						}
 						composer.gotoScene("ResultsScene", options)
@@ -178,12 +183,12 @@ function Update()
 		if(math.floor(gameTime % 3600/60) < 10)then
 			timerActual.text = timerActual.text .. "0" .. (math.floor(gameTime % 3600/60))
 		else
-			
 			timerActual.text = timerActual.text .. (math.floor(gameTime % 3600/60))
 		end
 		
 		--timerActual.text = timerDefualtText .. (math.floor(gameTime / 7200)) .. ":" .. (math.floor(gameTime % 3600/60))
 		scoreActual.text = scoreDefualtText .. (score)
+		healthActual.text = healthDefualtText .. (health)
 		playerAvatar:Steer(steering:GetInput())
 		playerAvatar:Update()
 		
@@ -247,6 +252,7 @@ function Update()
 				elseif(
 					j:GetPosX() < 0
 				)then
+					health = health - 1
 					table.remove(enemies, i)
 					j:Delete()
 					local a = ai[i]
@@ -377,6 +383,7 @@ function scene:show( event )
 	paused = false
 	gameTime = 0
 	difficulty = 0
+	health = 3
 	
 	enemyspawncenter = 0
 	enemyspawnnumber = 0
@@ -425,7 +432,7 @@ function scene:show( event )
 	}
 	timerActual = display.newText(timerDefault)
 	
-	scoreDefualtText = "Score :  "
+	scoreDefualtText = "Score  :  "
 	scoreDefault =
 	{
 		text = scoreDefualtText,
@@ -436,6 +443,18 @@ function scene:show( event )
 		align = "left"
 	}
 	scoreActual = display.newText(scoreDefault)
+	
+	healthDefualtText = "Health :  "
+	healthDefault =
+	{
+		text = healthDefualtText,
+		x = 110,
+		y = 112,
+		width = 200,
+		fontSize = 24,
+		align = "left"
+	}
+	healthActual = display.newText(healthDefault)
 	
    elseif ( phase == "did" ) then
 	audio.play(sounds.background, {channel = 1, loops = -1})
@@ -486,6 +505,9 @@ function scene:hide( event )
 		scoreActual.text = ""
 		scoreActual:removeSelf()
 		scoreActual = nil
+		healthActual.text = ""
+		healthActual:removeSelf()
+		healthActual = nil
 		
 		Physics.stop()
    end
