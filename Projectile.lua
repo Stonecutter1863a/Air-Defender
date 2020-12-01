@@ -19,12 +19,13 @@ local Projectile = {}
 	return o
 end]]
 
-function Projectile:new(o,x,y,d,sfx,s,g)	--## needs to play sfx
+function Projectile:new(o,x,y,dy,dx,sfx,s,g)	--## needs to play sfx
 	o = o or {}
 	setmetatable(o, self)
 	self.__index = self
 	
-	o.aim = d
+	o.aimY = dy
+	o.aimX = dx
 	
 	local Graphic = require("Graphic")
 	
@@ -36,8 +37,8 @@ function Projectile:new(o,x,y,d,sfx,s,g)	--## needs to play sfx
 end
 
 function Projectile:Update()
-		self.graphic:SetY(self.graphic:GetY() - (math.sin(self.aim) * self.topspeed))
-		self.graphic:SetX(self.graphic:GetX() + (math.cos(self.aim) * self.topspeed))
+		self.graphic:SetY(self.graphic:GetY() - (self.aimY * self.topspeed))
+		self.graphic:SetX(self.graphic:GetX() + (self.aimX * self.topspeed))
 end
 
 function Projectile:GetPosX()
@@ -49,9 +50,13 @@ end
 
 function Projectile:Delete()
 	self.graphic:Destroy()
-	for k,l in pairs(self) do
-		l = nil
-	end
+	
+		for i=1,#self,1 do
+			local j = self[#self]
+			table.remove(self, #self)
+			j=nil
+		end
+		
 	self = nil
 end
 

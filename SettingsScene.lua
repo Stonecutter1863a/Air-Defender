@@ -11,7 +11,7 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
 local MenuButton = require("MenuButton")
---local OptionButton = require("OptionButton")
+local OptionButton = require("OptionButton")
  
 -- "scene:create()"
 function scene:create( event )
@@ -29,7 +29,10 @@ function scene:show( event )
    if ( phase == "will" ) then
 
    		title = MenuButton:new(o, 0, "TitleScene")
-   		title:SetPos(display.contentCenterX, display.contentCenterY + 90)
+   		title:SetPos(display.contentCenterX, display.contentCenterY + 190)
+		
+		testsetting = OptionButton:new(o)
+   		testsetting:SetPos(display.contentCenterX, display.contentCenterY + 150)
    
    elseif ( phase == "did" ) then
    
@@ -49,6 +52,8 @@ function scene:hide( event )
 	local sceneGroup = self.view
 	title:Destroy()
 	title=nil
+	testsetting:Destroy()
+	testsetting=nil
  
    end
 end

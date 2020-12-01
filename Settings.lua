@@ -30,10 +30,11 @@ function Settings:Set(key, value)
 end
 
 function Settings:Delete()
-	for i, j in pairs(self) do
-		table.remove(self, i)
-		j = nil
-	end
+		for i=1,#self,1 do
+			local j = self[#self]
+			table.remove(self, #self)
+			j=nil
+		end
 	self = nil
 end
 

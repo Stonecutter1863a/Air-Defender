@@ -20,7 +20,7 @@ function Weapon:new (o, weapontype)    --constructor
 	setmetatable(o, self)
 	self.__index = self
 	
-	o.speed = 15
+	o.speed = 30
 	o.graphic = "graphic"
 	o.sfx = "sfx"
 	o.endlag = 15
@@ -38,9 +38,9 @@ function Weapon:Update()
 	end
 end
 
-function Weapon:FireProjectile(x,y,direction)
+function Weapon:FireProjectile(x,y,directionX,directionY)
 	if(self.lagtime == 0)then
-		local projectile = Projectile:new(o, x, y, direction, self.sfx, self.speed, self.graphic)
+		local projectile = Projectile:new(o, x, y, directionX,directionY, self.sfx, self.speed, self.graphic)
 		self.lagtime = self.endlag
 		--print("fired projectile")
 		return projectile
@@ -51,10 +51,11 @@ function Weapon:FireProjectile(x,y,direction)
 end
 
 function Weapon:Delete()
-	for i, j in ipairs(self) do
-		table.remove(self, i)
-		j = nil
-	end
+		for i=1,#self,1 do
+			local j = self[#self]
+			table.remove(self, #self)
+			j=nil
+		end
 	self = nil
 end
 

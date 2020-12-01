@@ -30,10 +30,11 @@ function AI:Update()
 end
 
 function AI:Delete()
-	for i, j in ipairs(self) do
-		table.remove(self, i)
-		j = nil
-	end
+		for i=1,#self,1 do
+			local j = self[#self]
+			table.remove(self, #self)
+			j=nil
+		end
 	self = nil
 end
 

@@ -5,7 +5,7 @@
 ]]
 	local widget = require("widget")
 	local sliderWidth = 10
-	local sliderHeight = 600
+	local sliderHeight = display.contentHeight
 	local opt = {
 		x=0,
 		y=0,
@@ -15,7 +15,7 @@
 		value=50
 	}
 	
-	local deadzone = {45,55}
+	--local deadzone = {45,55}
 
 --[[
 	Class SteeringSlider
@@ -39,12 +39,14 @@ end
 
 function SteeringSlider:Update()
 	local input = 0
-	if(self.interface.value < self.deadzone[1]) then
-		input = (self.interface.value - self.deadzone[1]) * 5 / 2
-	elseif(self.interface.value > self.deadzone[2]) then
-		input = (self.interface.value - self.deadzone[2]) * 5 / 2
-	end
-	self.input = input
+	--if(self.interface.value < self.deadzone[1]) then
+	--	input = (self.interface.value - self.deadzone[1]) * 5 / 2
+	--elseif(self.interface.value > self.deadzone[2]) then
+	--	input = (self.interface.value - self.deadzone[2]) * 5 / 2
+	--end
+	--input = (self.interface.value-50)*4
+	--self.input = input
+	self.input = self.interface.value
 end
 
 function SteeringSlider:GetInput()
@@ -54,10 +56,11 @@ end
 
 function SteeringSlider:Destroy()
 	self.interface:removeSelf()
-	for i, j in ipairs(self) do
-		table.remove(self, i)
-		j = nil
-	end
+		for i=1,#self,1 do
+			local j = self[#self]
+			table.remove(self, #self)
+			j=nil
+		end
 	self=nil
 end
 

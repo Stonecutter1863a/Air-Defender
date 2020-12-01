@@ -52,15 +52,17 @@ function Graphic:Translate(x,y)	--## Incomplete. Needs to take sprite offsets in
 end
 
 function Graphic:Destroy()
-	for i, j in ipairs(self.sprites) do
-		table.remove(self.sprites, i)
-		j:removeSelf()
-		j = nil
-	end
-	for i, j in ipairs(self) do
-		table.remove(self, i)
-		j = nil
-	end
+		for i=1,#self.sprites,1 do
+			local j = self.sprites[#self.sprites]
+			table.remove(self.sprites, #self.sprites)
+			j:removeSelf()
+			j = nil
+		end
+		for i=1,#self,1 do
+			local j = self[#self]
+			table.remove(self, #self)
+			j=nil
+		end
 	self = nil
 end
 
