@@ -12,6 +12,7 @@ local composer = require( "composer" )
 local scene = composer.newScene()
 local MenuButton = require("MenuButton")
 local OptionButton = require("OptionButton")
+local Graphic = require("Graphic")
  
 -- "scene:create()"
 function scene:create( event )
@@ -28,7 +29,7 @@ function scene:show( event )
  
    if ( phase == "will" ) then
 
-   		title = MenuButton:new(o, 0, "TitleScene")
+   		title = MenuButton:new(o, 0, "TitleScene", Graphic:new({},0,0,"backbutton"))
    		title:SetPos(display.contentCenterX, display.contentCenterY + 190)
 		
 		testsetting = OptionButton:new(o)

@@ -11,6 +11,7 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
 local MenuButton = require("MenuButton")
+local Graphic = require("Graphic")
  
 -- "scene:create()"
 function scene:create( event )
@@ -27,10 +28,10 @@ function scene:show( event )
  
    if ( phase == "will" ) then
 
-   		play = MenuButton:new(o, 2, "GameScene")
+   		play = MenuButton:new(o, 2, "GameScene", Graphic:new({},0,0,"resumebutton"))
    		play:SetPos(display.contentCenterX, display.contentCenterY - 30)
    
-   		title = MenuButton:new(o, 0, "TitleScene")
+   		title = MenuButton:new(o, 0, "TitleScene",Graphic:new({},0,0,"quitbutton"))
    		title:SetPos(display.contentCenterX, display.contentCenterY + 30)
 		
 		--event.parent:Pause()

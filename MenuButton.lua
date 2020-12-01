@@ -17,7 +17,7 @@
 local MenuButton = {}
 
 
-function MenuButton:new (o, a, b)    --constructor
+function MenuButton:new (o, a, b, g)    --constructor
 	o = o or {}
 	setmetatable(o, self)
 	self.__index = self
@@ -25,18 +25,19 @@ function MenuButton:new (o, a, b)    --constructor
 	local pauseScene = a
 	local targetScene = b
 	
-	local g = display.newRect(0, 0, 50, 20)
-	g:setFillColor(1,1,1)
+	--local g = display.newRect(0, 0, 50, 20)
+	--g:setFillColor(1,1,1)
 	o.interface = g
 	--o.interface = widget.newButton(opt)
+	o.params = {}
 	
 	function o.ToScene()
 		if not (isPaused == true)then
 			local composer = require("composer")
 			if (pauseScene == 0) then
-				composer.gotoScene(targetScene)
+				composer.gotoScene(targetScene, {params = o.params})
 			elseif (pauseScene == 1) then
-				composer.showOverlay(targetScene)
+				composer.showOverlay(targetScene, {params = o.params})
 				o.isPaused = true
 			elseif (pauseScene == 2) then
 				composer.hideOverlay()
@@ -53,8 +54,12 @@ function MenuButton:new (o, a, b)    --constructor
 end
 
 function MenuButton:SetPos(x,y)
-	self.interface.x = x
-	self.interface.y = y
+	self.interface:SetX(x)
+	self.interface:SetY(y)
+end
+
+function MenuButton:SetParams(p)
+	self.params = p
 end
 
 function MenuButton:IsPaused()
@@ -71,7 +76,7 @@ function MenuButton:Pause()
 end
 
 function MenuButton:Destroy()
-	self.interface:removeSelf()
+	self.interface:Destroy()
 	self=nil
 end
 

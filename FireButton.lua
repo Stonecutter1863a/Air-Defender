@@ -44,14 +44,14 @@ local function touched(event)
 	end
 end
 
-function FireButton:new (o)    --constructor
+function FireButton:new (o, g)    --constructor
 	o = o or {}
 	setmetatable(o, self)
 	self.__index = self
 	
 	
-	local g = display.newRect(0, 0, 100, 100)
-	g:setFillColor(1,1,1)
+	--local g = display.newRect(0, 0, 100, 100)
+	--g:setFillColor(1,1,1)
 	o.interface = g
 	o.interface.isPressed = false
 	--o.interface = widget.newButton(opt)
@@ -65,8 +65,8 @@ function FireButton:IsPressed()
 end
 
 function FireButton:SetPos(x,y)
-	self.interface.x = x
-	self.interface.y = y
+	self.interface:SetX(x)
+	self.interface:SetY(y)
 end
 --[[
 function FireButton:Reset()
@@ -74,7 +74,8 @@ function FireButton:Reset()
 end]]
 
 function FireButton:Destroy()
-	self.interface:removeSelf()
+	self.interface:removeEventListener("touch", touched)
+	self.interface:Destroy()
 		for i=1,#self,1 do
 			local j = self[#self]
 			table.remove(self, #self)

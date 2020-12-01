@@ -29,7 +29,7 @@ function Projectile:new(o,x,y,dy,dx,sfx,s,g)	--## needs to play sfx
 	
 	local Graphic = require("Graphic")
 	
-	o.graphic = Graphic:new({},x,y,g)
+	o.graphic = Graphic:new({},x,y,"projectile")
 	o.sfx = sfx
 	o.topspeed = s
 	

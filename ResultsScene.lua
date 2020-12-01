@@ -1,7 +1,7 @@
 --[[
-	TitleScene.lua
+	ResultsScene.lua
 	
-	The title screen for Air Defender.
+	The game over screen for Air Defender.
 ]]
 
 
@@ -11,11 +11,11 @@
 local composer = require( "composer" )
 local scene = composer.newScene()
 local MenuButton = require("MenuButton")
-local Settings = require("Settings")
 local Graphic = require("Graphic")
 
-local music
-local settings
+local score
+local gameTime
+
  
 -- "scene:create()"
 function scene:create( event )
@@ -31,27 +31,15 @@ function scene:show( event )
    local phase = event.phase
  
    if ( phase == "will" ) then
-   
-		if(event.params ~= nil and event.params.settings ~= nil)then
-			settings = event.params.settings
-		else
-			settings = Settings:new()
-			settings.level = 1
-			settings.sfx = true
-			settings.music = true
-		end
 
-   		play = MenuButton:new(o, 0, "GameScene", Graphic:new({},0,0,"playbutton"))
-   		play:SetPos(display.contentCenterX, display.contentCenterY - 30)
-		play:SetParams({settings = settings})
-   
-   		options = MenuButton:new(o, 0, "SettingsScene",Graphic:new({},0,0,"settingsbutton"))
-   		options:SetPos(display.contentCenterX, display.contentCenterY + 30)
-		options:SetParams({settings = settings})
+		gameTime = event.params.gameTime
+		score = event.params.score
+
+   		title = MenuButton:new(o, 0, "TitleScene", Graphic:new({},0,0,"quitbutton"))
+   		title:SetPos(display.contentCenterX, display.contentCenterY + 190)
 		
+   
    elseif ( phase == "did" ) then
-	music = audio.loadSound("Assets/Sounds/MenuSong/Sector-Off-Limits_Looping.mp3")
-	audio.play(music, {channel = 1, loops = -1})
    end
 end
  
@@ -66,10 +54,9 @@ function scene:hide( event )
    elseif ( phase == "did" ) then
    
 	local sceneGroup = self.view
-	play:Destroy()
-	play=nil
-	options:Destroy()
-	options=nil
+	title:Destroy()
+	title=nil
+ 
    end
 end
  
@@ -78,10 +65,8 @@ function scene:destroy( event )
  
 	local sceneGroup = self.view
 	
-	--play:Destroy()
-	--play=nil
-	--options:Destroy()
-	--options=nil
+	--title:Destroy()
+	--title=nil
 	
 end
  

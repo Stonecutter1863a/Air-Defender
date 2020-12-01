@@ -96,7 +96,7 @@ end
 function Combatant:Damage(amount)
 	self.health = self.health - amount
 	if(self.health <= 0) then
-		self:Instakill()
+		--self:Instakill()
 		return true
 	else
 		return false
