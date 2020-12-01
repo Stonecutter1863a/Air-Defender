@@ -31,8 +31,9 @@ function Graphic:new (o, x, y, g)    --constructor
 	o.y = y
 	
 	
-	
 	if(g == "grunt")then
+		o.width = 52
+		o.height = 96
 		local spriteoptions = {
 			frames = {
 				{x = 24, y = 16, width = 52, height = 96}
@@ -48,6 +49,8 @@ function Graphic:new (o, x, y, g)    --constructor
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
 		table.insert(o.sprites, sprite)
 	elseif(g == "drone")then
+		o.width = 108
+		o.height = 56
 		local spriteoptions = {
 			frames = {
 				{x = 12, y = 20, width = 108, height = 56}
@@ -63,6 +66,8 @@ function Graphic:new (o, x, y, g)    --constructor
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
 		table.insert(o.sprites, sprite)
 	elseif(g == "fastdrone")then
+		o.width = 60
+		o.height = 88
 		local alien3options = {
 			frames = {
 				{x = 36, y = 20, width = 60, height = 88}
@@ -78,6 +83,8 @@ function Graphic:new (o, x, y, g)    --constructor
 		local alien3 = display.newSprite(alien3Sheet,alien3Sequence)
 		table.insert(o.sprites, alien3)
 	elseif(g == "smartdrone")then
+		o.width = 88
+		o.height = 52
 		local alien1options = {
 			frames = {
 				{x = 16, y = 16, width = 88, height = 52}
@@ -93,6 +100,8 @@ function Graphic:new (o, x, y, g)    --constructor
 		local alien1 = display.newSprite(alien1Sheet,alien1Sequence)
 		table.insert(o.sprites, alien1)
 	elseif(g == "projectile")then
+		o.width = 8*2
+		o.height = 4*2
 		local spriteoptions = {
 			frames = {
 				{x = 0, y = 4, width = 8, height = 4},
@@ -112,6 +121,8 @@ function Graphic:new (o, x, y, g)    --constructor
 		table.insert(o.sprites, sprite)
 	elseif(g == "bomb")then
 	elseif(g == "avatar")then
+		o.width = 96
+		o.height = 40
 		local spriteoptions = {
 			frames = {
 				{x = 0, y = 24, width = 96, height = 40}
@@ -130,6 +141,8 @@ function Graphic:new (o, x, y, g)    --constructor
 	elseif(g == "titlebutton")then
 	elseif(g == "results")then
 	elseif(g == "game1")then
+		o.width = 1500
+		o.height = 1500
 		local spriteoptions = {
 			frames = {
 				{x = 0, y = 0, width = 1500, height = 1500}
@@ -146,6 +159,8 @@ function Graphic:new (o, x, y, g)    --constructor
 		sprite:scale(1, 1)
 		table.insert(o.sprites, sprite)
 	elseif(g == "game2")then
+		o.width = 1500
+		o.height = 1500
 		local spriteoptions = {
 			frames = {
 				{x = 0, y = 0, width = 1500, height = 1500}
@@ -162,6 +177,8 @@ function Graphic:new (o, x, y, g)    --constructor
 		sprite:scale(1, 1)
 		table.insert(o.sprites, sprite)
 	elseif(g == "game3")then
+		o.width = 1500
+		o.height = 1500
 		local spriteoptions = {
 			frames = {
 				{x = 0, y = 0, width = 1500, height = 1500}
@@ -178,6 +195,8 @@ function Graphic:new (o, x, y, g)    --constructor
 		sprite:scale(1, 1)
 		table.insert(o.sprites, sprite)
 	elseif(g == "playbutton")then
+		o.width = 60*2
+		o.height = 20*2
 		local spriteoptions = {
 			frames = {
 				{x = 2, y = 2, width = 60, height = 20}
@@ -191,8 +210,11 @@ function Graphic:new (o, x, y, g)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2,2)
 		table.insert(o.sprites, sprite)
 	elseif(g == "backbutton")then
+		o.width = 46*2
+		o.height = 20*2
 		local spriteoptions = {
 			frames = {
 				{x = 2, y = 46, width = 46, height = 20}
@@ -206,8 +228,11 @@ function Graphic:new (o, x, y, g)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2,2)
 		table.insert(o.sprites, sprite)
 	elseif(g == "resumebutton")then
+		o.width = 66*2
+		o.height = 20*2
 		local spriteoptions = {
 			frames = {
 				{x = 2, y = 68, width = 66, height = 20}
@@ -215,14 +240,17 @@ function Graphic:new (o, x, y, g)    --constructor
 		}
 		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
 		local spriteSequence = {
-			name = "pause",
+			name = "resume",
 			start = 1,
 			count = 1,
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2,2)
 		table.insert(o.sprites, sprite)
 	elseif(g == "quitbutton")then
+		o.width = 44*2
+		o.height = 20*2
 		local spriteoptions = {
 			frames = {
 				{x = 2, y = 90, width = 44, height = 20}
@@ -236,9 +264,12 @@ function Graphic:new (o, x, y, g)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2,2)
 		table.insert(o.sprites, sprite)
 	elseif(g == "settings")then
 	elseif(g == "settingsbutton")then
+		o.width = 72*2
+		o.height = 20*2
 		local spriteoptions = {
 			frames = {
 				{x = 2, y = 24, width = 72, height = 20}
@@ -252,8 +283,11 @@ function Graphic:new (o, x, y, g)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2,2)
 		table.insert(o.sprites, sprite)
 	elseif(g == "firebutton")then
+		o.width = 46*2
+		o.height = 20*2
 		local spriteoptions = {
 			frames = {
 				{x = 2, y = 158, width = 46, height = 20}
@@ -267,8 +301,11 @@ function Graphic:new (o, x, y, g)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2,2)
 		table.insert(o.sprites, sprite)
 	elseif(g == "pausebutton")then
+		o.width = 20*2
+		o.height = 20*2
 		local spriteoptions = {
 			frames = {
 				{x = 98, y = 158, width = 20, height = 20}
@@ -282,6 +319,7 @@ function Graphic:new (o, x, y, g)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2,2)
 		table.insert(o.sprites, sprite)
 	end
 	
@@ -340,16 +378,17 @@ function Graphic:SetY(y)
 	end
 end
 function Graphic:GetHeight()
-	return 50
+	return self.width
 end
 function Graphic:GetWidth()
-	return 50
+	return self.height
 end
 function Graphic:GetRotation()
 	return self.angle
 end
 
 function Graphic:addEventListener(eventname, listener)
+	--print(#self.sprites)
 	for i=1,#self.sprites,1 do
 		self.sprites[i]:addEventListener(eventname, listener)
 	end

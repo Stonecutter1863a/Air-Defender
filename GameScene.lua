@@ -332,9 +332,10 @@ function scene:show( event )
 	pause = MenuButton:new({}, 1, "PauseScene", Graphic:new({},0,0,"pausebutton"))
 	pause:SetPos(pause.interface:GetWidth(), (display.contentHeight*4/5) - (pause.interface:GetHeight()/2))
 	
-	g = Graphic:new({},0,0,"fire")
+	g = Graphic:new({},0,0,"firebutton")
 	fire = FireButton:new({}, g)
-	fire:SetPos(fire.interface:GetWidth(), (display.contentHeight*2/5) - (fire.interface:GetHeight()/2))
+	--fire:SetPos(fire.interface:GetWidth(), (display.contentHeight*2/5) - (fire.interface:GetHeight()/2))
+	fire:SetPos(fire.interface.width, (display.contentHeight*2/5) - (fire.interface.height/2))
 	
 	exiting = false
 	paused = false
@@ -376,7 +377,7 @@ function scene:show( event )
 	math.randomseed(os.time())
 	
    elseif ( phase == "did" ) then
-	print(audio.play(sounds.background, {channel = 1, loops = -1}))
+	audio.play(sounds.background, {channel = 1, loops = -1})
    end
 end
  

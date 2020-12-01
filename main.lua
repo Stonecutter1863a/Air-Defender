@@ -6,8 +6,9 @@
 
 -- Your code here
 
-	print(display.contentHeight)
-	print(display.contentWidth)
+	--print(display.contentHeight)
+	--print(display.contentWidth)
+
 
 	local composer = require("composer")
 	composer.gotoScene("TitleScene")
