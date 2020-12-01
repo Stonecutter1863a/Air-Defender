@@ -6,6 +6,7 @@
 ]]
 
 		local Projectile = require("Projectile")
+		local Physics
 
 --[[
 	Class Weapon

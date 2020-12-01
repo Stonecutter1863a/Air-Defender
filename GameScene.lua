@@ -69,6 +69,13 @@ local explosionVolume
 local fireVolume
 
 
+local timerDefualtText
+local timerDefault
+local timerActual
+local scoreDefualtText
+local scoreDefault
+local scoreActual
+
 function GameOver()
 						local options = {
 							effect = "fade",
@@ -107,6 +114,8 @@ function SpawnEnemy(enemytype)
 	
 		table.insert(ai, AI:new(o,1))
 	end
+	
+	--Physics.addBody(enemies[#enemies], "dynamic")
 end
 
 function ChooseEnemyType()
@@ -160,6 +169,21 @@ function Update()
 	if (pause:IsPaused() == false)then
 		audio.resume(1)
 		gameTime = gameTime + 1
+		
+		if(math.floor(gameTime / 7200) < 10)then
+			timerActual.text = timerDefualtText .. "0" .. (math.floor(gameTime / 7200) .. ":")
+		else
+			timerActual.text = timerDefualtText .. (math.floor(gameTime / 7200) .. ":")
+		end
+		if(math.floor(gameTime % 3600/60) < 10)then
+			timerActual.text = timerActual.text .. "0" .. (math.floor(gameTime % 3600/60))
+		else
+			
+			timerActual.text = timerActual.text .. (math.floor(gameTime % 3600/60))
+		end
+		
+		--timerActual.text = timerDefualtText .. (math.floor(gameTime / 7200)) .. ":" .. (math.floor(gameTime % 3600/60))
+		scoreActual.text = scoreDefualtText .. (score)
 		playerAvatar:Steer(steering:GetInput())
 		playerAvatar:Update()
 		
@@ -181,7 +205,7 @@ function Update()
 			)then
 				table.remove(projectiles, i)
 				j:Delete()
-			else
+			--[[else
 				for k,l in ipairs(enemies)do
 					if(
 						j:GetPosY() <= l:GetPosY()+l:GetHeight()
@@ -197,7 +221,7 @@ function Update()
 						end
 						score = score + 100
 					end
-				end
+				end]]
 			end
 		end
 		
@@ -211,7 +235,16 @@ function Update()
 				a:Delete()
 			else
 				j:Update()
-				if(
+				if(j.graphic.sprites[1].collided == true)then
+					--print("detected collision")
+					if (j:Damage(1) == true)then
+						j:Delete()
+						table.remove(enemies, i)
+						table.remove(ai, i)
+						audio.play(sounds.explosion, {channel = 4, loops = 0})
+					end
+					score = score + 10
+				elseif(
 					j:GetPosX() < 0
 				)then
 					table.remove(enemies, i)
@@ -295,6 +328,9 @@ function scene:show( event )
 		
 		settings = event.params.settings
 		
+		Physics.start()
+		Physics.setGravity(0,0)
+		
 		audio.stop()
 		backdrops = {}
 		if(settings.level == 1)then
@@ -332,8 +368,8 @@ function scene:show( event )
 	pause = MenuButton:new({}, 1, "PauseScene", Graphic:new({},0,0,"pausebutton"))
 	pause:SetPos(pause.interface:GetWidth(), (display.contentHeight*4/5) - (pause.interface:GetHeight()/2))
 	
-	g = Graphic:new({},0,0,"firebutton")
-	fire = FireButton:new({}, g)
+	--local h = Graphic:new({},0,0,"firebutton")
+	fire = FireButton:new({})
 	--fire:SetPos(fire.interface:GetWidth(), (display.contentHeight*2/5) - (fire.interface:GetHeight()/2))
 	fire:SetPos(fire.interface.width, (display.contentHeight*2/5) - (fire.interface.height/2))
 	
@@ -375,6 +411,31 @@ function scene:show( event )
 	table.insert(ai, AI:new(o,0))]]
 	
 	math.randomseed(os.time())
+	
+	
+	timerDefualtText = "Time   :  "
+	timerDefault =
+	{
+		text = timerDefualtText,
+		x = 110,
+		y = 84,
+		fontSize = 24,
+		width = 200,
+		align = "left"
+	}
+	timerActual = display.newText(timerDefault)
+	
+	scoreDefualtText = "Score :  "
+	scoreDefault =
+	{
+		text = scoreDefualtText,
+		x = 110,
+		y = 56,
+		width = 200,
+		fontSize = 24,
+		align = "left"
+	}
+	scoreActual = display.newText(scoreDefault)
 	
    elseif ( phase == "did" ) then
 	audio.play(sounds.background, {channel = 1, loops = -1})
@@ -418,6 +479,15 @@ function scene:hide( event )
 			playerAvatar:Delete()
 		end
 		steering:Destroy()
+		
+		timerActual.text = ""
+		timerActual:removeSelf()
+		timerActual = nil
+		scoreActual.text = ""
+		scoreActual:removeSelf()
+		scoreActual = nil
+		
+		Physics.stop()
    end
 end
  

@@ -20,6 +20,16 @@ local gameTime
 local bestscore
 local besttime
 
+local besttimetext
+local bestscoretext
+local timetext
+local scoretext
+
+local besttimedisplay
+local bestscoredisplay
+local timedisplay
+local scoredisplay
+
  
 -- "scene:create()"
 function scene:create( event )
@@ -52,15 +62,14 @@ function scene:show( event )
 			bestscore = score
 			--print(score)
 		else
-			print("found file")
 			local instring
 			local filedata
 			for line in infile:lines() do
 				instring = line
+				--print(instring)
 			end
 			if(instring ~= nil)then
 				filedata = json.decode(instring)
-				
 			end
 			if(filedata ~= nil and filedata.time ~= nil)then
 				besttime = math.max(filedata.time, gameTime)
@@ -85,10 +94,70 @@ function scene:show( event )
 		if (not outfile) then
 			print("File error: " .. errorString)
 		else
-			outfile:write("{ time : " .. besttime .. " , score : " .. bestscore .. " }")
+			outfile:write(json.encode({time=besttime, score=bestscore}))
 			--print("Wrote to file")
 			io.close(outfile)
 		end
+		
+		besttimetext = "Your best survival time was :  "
+		bestscoretext = "Your best score was         :  " .. bestscore
+		timetext = "You survived for :  "
+		scoretext = "Your score was   :  " .. score
+		
+		
+		if(math.floor(besttime / 7200) < 10)then
+			besttimetext = besttimetext .. "0" .. (math.floor(besttime / 7200) .. ":")
+		else
+			besttimetext = besttimetext .. (math.floor(besttime / 7200) .. ":")
+		end
+		if(math.floor(besttime % 3600/60) < 10)then
+			besttimetext = besttimetext .. "0" .. (math.floor(besttime % 3600/60))
+		else
+			
+			besttimetext = besttimetext .. (math.floor(besttime % 3600/60))
+		end
+		
+		if(math.floor(gameTime / 7200) < 10)then
+			timetext = timetext .. "0" .. (math.floor(gameTime / 7200) .. ":")
+		else
+			timetext = timetext .. (math.floor(gameTime / 7200) .. ":")
+		end
+		if(math.floor(gameTime % 3600/60) < 10)then
+			timetext = timetext .. "0" .. (math.floor(gameTime % 3600/60))
+		else
+			
+			timetext = timetext .. (math.floor(gameTime % 3600/60))
+		end
+		
+		
+		besttimedisplay = display.newText({
+			text=besttimetext,
+			x=display.contentCenterX,
+			y=display.contentCenterY + 28,
+			width = display.contentWidth*2/3,
+			align = "left"
+		})
+		bestscoredisplay = display.newText({
+			text=bestscoretext,
+			x=display.contentCenterX,
+			y=display.contentCenterY,
+			width = display.contentWidth*2/3,
+			align = "left"
+		})
+		timedisplay = display.newText({
+			text=timetext,
+			x=display.contentCenterX,
+			y=display.contentCenterY - 84,
+			width = display.contentWidth*2/3,
+			align = "left"
+		})
+		scoredisplay = display.newText({
+			text=scoretext,
+			x=display.contentCenterX,
+			y=display.contentCenterY - 112,
+			width = display.contentWidth*2/3,
+			align = "left"
+		})
    elseif ( phase == "did" ) then
    end
 end
@@ -106,6 +175,15 @@ function scene:hide( event )
 	local sceneGroup = self.view
 	title:Destroy()
 	title=nil
+	
+	scoredisplay:removeSelf()
+	scoredisplay = nil
+	timedisplay:removeSelf()
+	timedisplay = nil
+	besttimedisplay:removeSelf()
+	besttimedisplay = nil
+	bestscoredisplay:removeSelf()
+	bestscoredisplay = nil
  
    end
 end

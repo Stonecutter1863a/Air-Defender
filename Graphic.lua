@@ -4,7 +4,7 @@
 	Manages sprites.
 ]]
 
-
+local Physics = require("physics")
 
 --[[
 	Class Graphic
@@ -29,9 +29,10 @@ function Graphic:new (o, x, y, g)    --constructor
 	o.angle = 0
 	o.x = x
 	o.y = y
-	
+	o.simulate = false
 	
 	if(g == "grunt")then
+		o.simulate = true
 		o.width = 52
 		o.height = 96
 		local spriteoptions = {
@@ -47,8 +48,10 @@ function Graphic:new (o, x, y, g)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		Physics.addBody(sprite,"kinematic",{outline=graphics.newOutline(4,spriteSheet,1)})
 		table.insert(o.sprites, sprite)
 	elseif(g == "drone")then
+		o.simulate = true
 		o.width = 108
 		o.height = 56
 		local spriteoptions = {
@@ -64,8 +67,10 @@ function Graphic:new (o, x, y, g)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		Physics.addBody(sprite,"kinematic",{outline=graphics.newOutline(4,spriteSheet,1)})
 		table.insert(o.sprites, sprite)
 	elseif(g == "fastdrone")then
+		o.simulate = true
 		o.width = 60
 		o.height = 88
 		local alien3options = {
@@ -81,8 +86,10 @@ function Graphic:new (o, x, y, g)    --constructor
 			loopCount = 0
 		}
 		local alien3 = display.newSprite(alien3Sheet,alien3Sequence)
+		Physics.addBody(alien3,"kinematic",{outline=graphics.newOutline(4,alien3Sheet,1)})
 		table.insert(o.sprites, alien3)
 	elseif(g == "smartdrone")then
+		o.simulate = true
 		o.width = 88
 		o.height = 52
 		local alien1options = {
@@ -98,8 +105,10 @@ function Graphic:new (o, x, y, g)    --constructor
 			loopCount = 0
 		}
 		local alien1 = display.newSprite(alien1Sheet,alien1Sequence)
+		Physics.addBody(alien1,"kinematic",{outline=graphics.newOutline(4,alien1Sheet,1)})
 		table.insert(o.sprites, alien1)
 	elseif(g == "projectile")then
+		o.simulate = true
 		o.width = 8*2
 		o.height = 4*2
 		local spriteoptions = {
@@ -118,6 +127,8 @@ function Graphic:new (o, x, y, g)    --constructor
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
 		sprite:scale(2,2)
+		sprite.tag = "projectile"
+		Physics.addBody(sprite,"dynamic",{radius=20})
 		table.insert(o.sprites, sprite)
 	elseif(g == "bomb")then
 	elseif(g == "avatar")then
@@ -347,6 +358,9 @@ end
 function Graphic:Destroy()
 		for i=1,#self.sprites,1 do
 			local j = self.sprites[#self.sprites]
+			if(j.simulated == true)then
+				Physics.removeBody(j)
+			end
 			table.remove(self.sprites, #self.sprites)
 			j:removeSelf()
 			j = nil

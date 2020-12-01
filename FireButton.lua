@@ -99,6 +99,7 @@ function FireButton:Destroy()
 	self.interface:removeEventListener("touch", FireButton.touched)
 	--self.interface:Destroy()
 	self.interface:removeSelf()
+	self.interface = nil
 		for i=1,#self,1 do
 			local j = self[#self]
 			table.remove(self, #self)

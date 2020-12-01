@@ -4,6 +4,7 @@
 	Combative units in Air Defender, such as the player avatar and enemy sprites.
 ]]
 
+
 --[[
 	
 ]]
@@ -17,6 +18,13 @@ function Combatant:new(o)
 	o = Combatant:new(o,1,false,0,1,1,g)
 	
 	return o
+end
+
+function Collide(event)
+	if(event.other.tag ~= nil and event.other.tag == "projectile")then
+		--print("collision!")
+		event.target.collided = true
+	end
 end
 
 function Combatant:new(o,h,p,w,t,a,g)
@@ -37,8 +45,13 @@ function Combatant:new(o,h,p,w,t,a,g)
 	
 	o.graphic = g
 	
+	if(p == false)then
+		g.sprites[1]:addEventListener("collision", Collide)
+		o.collided = false
+	end
 	return o
 end
+
 
 function Combatant:Steer(dir)
 	
@@ -95,6 +108,7 @@ end
 
 function Combatant:Damage(amount)
 	self.health = self.health - amount
+	self.collided = false
 	if(self.health <= 0) then
 		--self:Instakill()
 		return true
