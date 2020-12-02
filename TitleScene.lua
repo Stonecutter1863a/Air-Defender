@@ -58,7 +58,11 @@ function scene:show( event )
 		
    elseif ( phase == "did" ) then
 	music = audio.loadSound("Assets/Sounds/MenuSong/Sector-Off-Limits_Looping.mp3")
-	audio.play(music, {channel = 1, loops = -1})
+	if(settings.music == true)then
+		audio.play(music, {channel = 1, loops = -1})
+	else
+		audio.stop(1)
+	end
    end
 end
  
