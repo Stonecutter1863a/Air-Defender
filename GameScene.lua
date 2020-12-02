@@ -483,8 +483,10 @@ function scene:show( event )
 	healthActual = display.newText(healthDefault)
 	
    elseif ( phase == "did" ) then
-	if(settings.music == true)then
+	if(settings:IsMusic() == true)then
 		audio.play(sounds.background, {channel = 1, loops = -1})
+	else
+		audio.pause(1)
 	end
    end
 end

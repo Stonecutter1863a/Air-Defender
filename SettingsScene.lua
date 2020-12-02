@@ -32,8 +32,8 @@ function scene:show( event )
    		title = MenuButton:new(o, 0, "TitleScene", Graphic:new({},0,0,"backbutton"))
    		title:SetPos(display.contentCenterX, display.contentCenterY + 190)
 		
-		testsetting = OptionButton:new(o)
-   		testsetting:SetPos(display.contentCenterX, display.contentCenterY + 150)
+		musicsetting = OptionButton:new(o, 1)
+   		musicsetting:SetPos(display.contentCenterX, display.contentCenterY + 100)
    
    elseif ( phase == "did" ) then
    
@@ -53,8 +53,8 @@ function scene:hide( event )
 	local sceneGroup = self.view
 	title:Destroy()
 	title=nil
-	testsetting:Destroy()
-	testsetting=nil
+	musicsetting:Destroy()
+	musicsetting=nil
  
    end
 end

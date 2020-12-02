@@ -14,30 +14,48 @@ local opt = {
 	height=buttonHeight,
 }
 
+Settings = require("Settings")
+
 local OptionButton = {}
 
-function OptionButton:new(o)    --constructor
+function OptionButton:new(o, i)    --constructor
 	o = o or {}
 	setmetatable(o, self)
 	self.__index = self
 	
-	local g = display.newRect(0, 0, 50, 20)
-	g:setFillColor(255,0,0)
+	local g = display.newRect(0, 0, 112, 31)
+	g:setFillColor(1,1,1)
+	group = display.newGroup()
+	group:insert(g)
+	if (i==1) then
+		text = display.newText(group, "MUSIC",1,1, native.systemFont)
+		text:setFillColor(0,255,0)
+	end
 	o.interface = g
 	--o.interface = widget.newButton(opt)
 
-	--o.interface:addEventListener("tap", changeSetting)
+	function changeSetting()
+		if (Settings:Get(i) == false) then
+			Settings:Set(i, true)
+		else
+			Settings:Set(i, false)
+		end
+		Settings:Update()
+	end
+	o.interface:addEventListener("tap", changeSetting)
 
 	return o
 end
 
 function OptionButton:SetPos(x,y)
-	self.interface.x = x
-	self.interface.y = y
+	group.x = x
+	group.y = y
 end
 
 function OptionButton:Destroy()
 	self.interface:removeSelf()
+	text:removeSelf()
+	group:removeSelf()
 	self=nil
 end
 

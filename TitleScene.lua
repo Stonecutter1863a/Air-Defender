@@ -35,8 +35,8 @@ function scene:show( event )
  
    if ( phase == "will" ) then
    
-		if(event.params ~= nil and event.params.settings ~= nil)then
-			settings = event.params.settings
+		if(settings ~= nil)then
+			--settings = event.params.settings
 		else
 			settings = Settings:new()
 			settings.level = 1
@@ -58,7 +58,7 @@ function scene:show( event )
 		
    elseif ( phase == "did" ) then
 	music = audio.loadSound("Assets/Sounds/MenuSong/Sector-Off-Limits_Looping.mp3")
-	if(settings.music == true)then
+	if(settings:IsMusic() == true)then
 		audio.play(music, {channel = 1, loops = -1})
 	else
 		audio.stop(1)
