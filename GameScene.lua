@@ -239,6 +239,10 @@ function Update()
 				table.remove(ai, i)
 				a:Delete()
 			else
+				local x = ai[i]:Update()
+				if x ~= nil then
+					j:Steer(x[2])
+				end
 				j:Update()
 				if(j.graphic.sprites[1].collided == true)then
 					--print("detected collision")

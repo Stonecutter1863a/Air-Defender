@@ -98,6 +98,11 @@ function Combatant:Update()	--## needs to account for graphic heights
 		self.weapon:Update()
 	else
 		self.graphic:SetY(self.graphic:GetY() - (self.aimY * self.topspeed))
+		if(self.graphic:GetY() > display.contentHeight - 96) then
+			self.graphic:SetY(display.contentHeight - 96)
+		elseif(self.graphic:GetY() < 96) then
+			self.graphic:SetY(96)
+		end
 		self.graphic:SetX(self.graphic:GetX() - (self.aimX * self.topspeed))
 	end
 end
