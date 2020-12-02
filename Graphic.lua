@@ -350,6 +350,78 @@ function Graphic:new (o, x, y, g)    --constructor
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
 		sprite:scale(2,2)
 		table.insert(o.sprites, sprite)
+	elseif(g == "musicbutton1")then
+		o.width = 72*2
+		o.height = 20*2
+		local spriteoptions = {
+			frames = {
+				{x = 69, y = 67, width = 50, height = 20}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
+		local spriteSequence = {
+			name = "musicbutton1",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2,2)
+		table.insert(o.sprites, sprite)
+	elseif(g == "musicbutton2")then
+		o.width = 72*2
+		o.height = 20*2
+		local spriteoptions = {
+			frames = {
+				{x = 122, y = 67, width = 50, height = 20}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
+		local spriteSequence = {
+			name = "musicbutton2",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2,2)
+		table.insert(o.sprites, sprite)
+	elseif(g == "sfxbutton1")then
+		o.width = 72*2
+		o.height = 20*2
+		local spriteoptions = {
+			frames = {
+				{x = 47, y = 89, width = 36, height = 20}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
+		local spriteSequence = {
+			name = "sfxbutton1",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2,2)
+		table.insert(o.sprites, sprite)
+	elseif(g == "lvlbutton1")then
+		o.width = 72*2
+		o.height = 20*2
+		local spriteoptions = {
+			frames = {
+				{x = 71, y = 111, width = 64, height = 20}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
+		local spriteSequence = {
+			name = "lvlbutton1",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2,2)
+		table.insert(o.sprites, sprite)
 	end
 	
 	

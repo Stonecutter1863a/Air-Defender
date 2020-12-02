@@ -32,13 +32,13 @@ function scene:show( event )
    		title = MenuButton:new(o, 0, "TitleScene", Graphic:new({},0,0,"backbutton"))
    		title:SetPos(display.contentCenterX, display.contentCenterY + 190)
 		
-		musicsetting = OptionButton:new(o, 1)
+		musicsetting = OptionButton:new(o, 1, Graphic:new({},0,0,"musicbutton1"))
    		musicsetting:SetPos(display.contentCenterX, display.contentCenterY + 40)
 
-   		sfxsetting = OptionButton:new(o, 2)
+   		sfxsetting = OptionButton:new(o, 2, Graphic:new({},0,0,"sfxbutton1"))
    		sfxsetting:SetPos(display.contentCenterX, display.contentCenterY + 90)
 
-   		levelsetting = OptionButton:new(o, 3)
+   		levelsetting = OptionButton:new(o, 3, Graphic:new({},0,0,"lvlbutton1"))
    		levelsetting:SetPos(display.contentCenterX, display.contentCenterY + 140)
    
    elseif ( phase == "did" ) then
