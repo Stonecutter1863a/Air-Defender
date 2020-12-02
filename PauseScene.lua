@@ -19,6 +19,9 @@ function scene:create( event )
    local sceneGroup = self.view
  
 end
+
+local play
+local title
  
 -- "scene:show()"
 function scene:show( event )

@@ -16,6 +16,9 @@ local Graphic = require("Graphic")
 
 local music
 local settings
+local play
+local options
+local credits
  
 -- "scene:create()"
 function scene:create( event )
@@ -49,6 +52,10 @@ function scene:show( event )
    		options:SetPos(display.contentCenterX, display.contentCenterY + 30)
 		options:SetParams({settings = settings})
 		
+   		credits = MenuButton:new(o, 0, "CreditsScene",Graphic:new({},0,0,"creditbutton"))
+   		credits:SetPos(display.contentCenterX, display.contentCenterY + 90)
+		credits:SetParams({settings = settings})
+		
    elseif ( phase == "did" ) then
 	music = audio.loadSound("Assets/Sounds/MenuSong/Sector-Off-Limits_Looping.mp3")
 	audio.play(music, {channel = 1, loops = -1})
@@ -66,10 +73,18 @@ function scene:hide( event )
    elseif ( phase == "did" ) then
    
 	local sceneGroup = self.view
-	play:Destroy()
-	play=nil
-	options:Destroy()
-	options=nil
+	if(play ~= nil)then
+		play:Destroy()
+		play=nil
+	end
+	if(options~=nil)then
+		options:Destroy()
+		options=nil
+	end
+	if(credits~=nil)then
+		credits:Destroy()
+		credits=nil
+	end
    end
 end
  

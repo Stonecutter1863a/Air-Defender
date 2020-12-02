@@ -17,7 +17,7 @@ local json = require("json")
 local score
 local gameTime
 
-local background
+local backgrounds
 
 local bestscore
 local besttime
@@ -52,15 +52,27 @@ function scene:show( event )
 		score = event.params.score
 		settings = event.params.settings
 		
+		backgrounds = {}
+		
 		if(settings.level == 1)then
-			background = Graphic:new({},0,0,"game1")
+			table.insert(backgrounds, Graphic:new({},0,0,"game1"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game1"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game1"))
 		elseif(settings.level == 2)then
-			background = Graphic:new({},0,0,"game2")
+			table.insert(backgrounds, Graphic:new({},0,0,"game2"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game2"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game2"))
 		else
-			background = Graphic:new({},0,0,"game3")
+			table.insert(backgrounds, Graphic:new({},0,0,"game3"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game3"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game3"))
 		end
-		background:SetX(750)
-		background:SetY(display.contentHeight)
+		backgrounds[1]:SetX(0)
+		backgrounds[1]:SetY(display.contentHeight - 750)
+		backgrounds[2]:SetX(1500)
+		backgrounds[2]:SetY(display.contentHeight - 750)
+		backgrounds[3]:SetX(3000)
+		backgrounds[3]:SetY(display.contentHeight - 750)
 
    		title = MenuButton:new(o, 0, "TitleScene", Graphic:new({},0,0,"quitbutton"))
    		title:SetPos(display.contentCenterX, display.contentCenterY + 190)
@@ -146,28 +158,28 @@ function scene:show( event )
 		besttimedisplay = display.newText({
 			text=besttimetext,
 			x=display.contentCenterX,
-			y=display.contentCenterY - 122,
+			y=display.contentCenterY - (112 * display.contentHeight / 750),
 			width = display.contentWidth*2/3,
 			align = "left"
 		})
 		bestscoredisplay = display.newText({
 			text=bestscoretext,
 			x=display.contentCenterX,
-			y=display.contentCenterY - 150,
+			y=display.contentCenterY - (150 * display.contentHeight / 750),
 			width = display.contentWidth*2/3,
 			align = "left"
 		})
 		timedisplay = display.newText({
 			text=timetext,
 			x=display.contentCenterX,
-			y=display.contentCenterY - 234,
+			y=display.contentCenterY - (244 * display.contentHeight / 750),
 			width = display.contentWidth*2/3,
 			align = "left"
 		})
 		scoredisplay = display.newText({
 			text=scoretext,
 			x=display.contentCenterX,
-			y=display.contentCenterY - 262,
+			y=display.contentCenterY - (282 * display.contentHeight / 750),
 			width = display.contentWidth*2/3,
 			align = "left"
 		})
@@ -198,7 +210,11 @@ function scene:hide( event )
 	bestscoredisplay:removeSelf()
 	bestscoredisplay = nil
 	
-	background:Destroy()
+	for i=1,#backgrounds,1 do
+		j = backgrounds[#backgrounds]
+		table.remove(backgrounds, #backgrounds)
+		j:Destroy()
+	end
  
    end
 end

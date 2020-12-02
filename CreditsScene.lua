@@ -17,7 +17,7 @@ local creditText
 local creditOptions
 local creditDisplay
 
-local background
+local backgrounds
 
 local exiting
 local title
@@ -28,12 +28,19 @@ function Update()
 	if(exiting == false)then
 		creditdisplay.y = creditdisplay.y - 2
 		credittimer = credittimer + 1
-		if(credittimer < 800)then
+		if(credittimer < 1200)then
 			timer.performWithDelay(15, Update, 1)
 		else
 			exiting = true
 			timer.cancel("Update")
 			composer.gotoScene("TitleScene", {effect = "fade",time = 900,params = {settings = settings}})
+		end
+		
+		for i=1,#backgrounds,1 do
+			backgrounds[i]:SetX(backgrounds[i]:GetX()-2)
+			if(backgrounds[i]:GetX() < -750)then
+				backgrounds[i]:SetX(5250)
+			end
 		end
 	
 	end
@@ -59,18 +66,40 @@ function scene:show( event )
 		exiting = false
 		credittimer = 0
 		
+		backgrounds = {}
+		
 		if(settings.level == 1)then
-			background = Graphic:new({},0,0,"game1")
+			table.insert(backgrounds, Graphic:new({},0,0,"game1"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game1"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game1"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game1"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game1"))
 		elseif(settings.level == 2)then
-			background = Graphic:new({},0,0,"game2")
+			table.insert(backgrounds, Graphic:new({},0,0,"game2"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game2"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game2"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game2"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game2"))
 		else
-			background = Graphic:new({},0,0,"game3")
+			table.insert(backgrounds, Graphic:new({},0,0,"game3"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game3"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game3"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game3"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game3"))
 		end
-		background:SetX(750)
-		background:SetY(display.contentHeight)
+		backgrounds[1]:SetX(0)
+		backgrounds[1]:SetY(display.contentHeight - 750)
+		backgrounds[2]:SetX(1500)
+		backgrounds[2]:SetY(display.contentHeight - 750)
+		backgrounds[3]:SetX(3000)
+		backgrounds[3]:SetY(display.contentHeight - 750)
+		backgrounds[4]:SetX(4500)
+		backgrounds[4]:SetY(display.contentHeight - 750)
+		backgrounds[5]:SetX(6000)
+		backgrounds[5]:SetY(display.contentHeight - 750)
 
    		title = MenuButton:new(o, 0, "TitleScene", Graphic:new({},0,0,"backbutton"))
-   		title:SetPos(display.contentCenterX - 500, display.contentCenterY + 190)
+   		title:SetPos(display.contentCenterX/3, display.contentCenterY + 190)
 		
    
 		
@@ -107,7 +136,11 @@ function scene:hide( event )
 		creditdisplay:removeSelf()
 		creditdisplay = nil
 	
-		background:Destroy()
+		for i=1,#backgrounds,1 do
+			local j = backgrounds[#backgrounds]
+			table.remove(backgrounds, #backgrounds)
+			j:Destroy()
+		end
    
    elseif ( phase == "did" ) then
    

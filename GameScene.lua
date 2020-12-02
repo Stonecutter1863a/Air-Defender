@@ -97,25 +97,25 @@ function SpawnEnemy(enemytype)
 	if(enemytype == 0)then
 		g = Graphic:new({},0,0)
 		table.insert(enemies, Combatant:new({},1,false,nil,groundenemyspeed,1,Graphic:new(o,0,0,"grunt")))
-		enemies[#enemies]:SetPos(display.contentWidth-1, display.contentHeight)
+		enemies[#enemies]:SetPos(display.contentWidth-1, (display.contentHeight-48))
 	
 		table.insert(ai, AI:new(o,0))
 	elseif(enemytype == 1)then
 		g = Graphic:new({},0,0)
 		table.insert(enemies, Combatant:new({},1,false,nil,airenemyspeed,1,Graphic:new(o,0,0,"drone")))
-		enemies[#enemies]:SetPos(display.contentWidth-1, enemyspawncenter + (math.random()*display.contentHeight/8) - (math.random()*display.contentHeight/8))
+		enemies[#enemies]:SetPos(display.contentWidth-1, enemyspawncenter + (math.random()*(display.contentHeight)/5) - (math.random()*(display.contentHeight)/5))
 	
 		table.insert(ai, AI:new(o,0))
 	elseif(enemytype == 2)then
 		g = Graphic:new({},0,0)
 		table.insert(enemies, Combatant:new({},1,false,nil,airenemyspeed*2,1,Graphic:new(o,0,0,"fastdrone")))
-		enemies[#enemies]:SetPos(display.contentWidth-1, enemyspawncenter + (math.random()*display.contentHeight/8) - (math.random()*display.contentHeight/8))
+		enemies[#enemies]:SetPos(display.contentWidth-1, enemyspawncenter + (math.random()*(display.contentHeight)/5) - (math.random()*(display.contentHeight)/5))
 	
 		table.insert(ai, AI:new(o,0))
 	elseif(enemytype == 3)then
 		g = Graphic:new({},0,0)
 		table.insert(enemies, Combatant:new({},1,false,nil,airenemyspeed,1,Graphic:new(o,0,0,"smartdrone")))
-		enemies[#enemies]:SetPos(display.contentWidth-1, enemyspawncenter + ((math.random()*display.contentHeight/8) - (math.random()*display.contentHeight/8)))
+		enemies[#enemies]:SetPos(display.contentWidth-1, enemyspawncenter + ((math.random()*(display.contentHeight)/5) - (math.random()*(display.contentHeight)/5)))
 	
 		table.insert(ai, AI:new(o,1))
 	end
@@ -133,7 +133,7 @@ end
 
 function SpawnEnemies()
 	if(enemyspawnnumber == 0)then
-		enemyspawncenter = math.random(0,display.contentHeight)
+		enemyspawncenter = math.random(96,display.contentHeight-96)
 		enemyspawnnumber = math.random(0,difficulty)
 		enemyspawntypeone = ChooseEnemyType()
 		enemyspawntypetwo = ChooseEnemyType()
@@ -277,12 +277,18 @@ function Update()
 		backdrops[1]:SetX(backdrops[1]:GetX()-2)
 		backdrops[2]:SetX(backdrops[2]:GetX()-2)
 		backdrops[3]:SetX(backdrops[3]:GetX()-2)
+		backdrops[4]:SetX(backdrops[4]:GetX()-2)
+		backdrops[5]:SetX(backdrops[5]:GetX()-2)
 		if(backdrops[1]:GetX() < -750)then
-			backdrops[1]:SetX(2250)
+			backdrops[1]:SetX(5250)
 		elseif(backdrops[2]:GetX() < -750)then
-			backdrops[2]:SetX(2250)
+			backdrops[2]:SetX(5250)
 		elseif(backdrops[3]:GetX() < -750)then
-			backdrops[3]:SetX(2250)
+			backdrops[3]:SetX(5250)
+		elseif(backdrops[4]:GetX() < -750)then
+			backdrops[4]:SetX(5250)
+		elseif(backdrops[5]:GetX() < -750)then
+			backdrops[5]:SetX(5250)
 		end
 	else
 		audio.pause(1)
@@ -343,11 +349,17 @@ function scene:show( event )
 			table.insert(backdrops, Graphic:new({},0,0,"game1"))
 			table.insert(backdrops, Graphic:new({},0,0,"game1"))
 			table.insert(backdrops, Graphic:new({},0,0,"game1"))
+			table.insert(backdrops, Graphic:new({},0,0,"game1"))
+			table.insert(backdrops, Graphic:new({},0,0,"game1"))
 		elseif(settings.level == 2)then
 			table.insert(backdrops, Graphic:new({},0,0,"game2"))
 			table.insert(backdrops, Graphic:new({},0,0,"game2"))
 			table.insert(backdrops, Graphic:new({},0,0,"game2"))
+			table.insert(backdrops, Graphic:new({},0,0,"game2"))
+			table.insert(backdrops, Graphic:new({},0,0,"game2"))
 		else
+			table.insert(backdrops, Graphic:new({},0,0,"game3"))
+			table.insert(backdrops, Graphic:new({},0,0,"game3"))
 			table.insert(backdrops, Graphic:new({},0,0,"game3"))
 			table.insert(backdrops, Graphic:new({},0,0,"game3"))
 			table.insert(backdrops, Graphic:new({},0,0,"game3"))
@@ -358,6 +370,10 @@ function scene:show( event )
 		backdrops[2]:SetY(display.contentHeight - 750)
 		backdrops[3]:SetX(3000)
 		backdrops[3]:SetY(display.contentHeight - 750)
+		backdrops[4]:SetX(4500)
+		backdrops[4]:SetY(display.contentHeight - 750)
+		backdrops[5]:SetX(6000)
+		backdrops[5]:SetY(display.contentHeight - 750)
 		
 	enemies = {}
 	ai = {}
@@ -372,12 +388,12 @@ function scene:show( event )
 	playerAvatar:SetPos(display.contentWidth/6, display.contentHeight/2)
 	
 	pause = MenuButton:new({}, 1, "PauseScene", Graphic:new({},0,0,"pausebutton"))
-	pause:SetPos(pause.interface:GetWidth(), (display.contentHeight*4/5) - (pause.interface:GetHeight()/2))
+	pause:SetPos((display.contentWidth/18), (display.contentHeight*3/5) - (pause.interface:GetHeight()/2) - (display.contentHeight/9))
 	
 	--local h = Graphic:new({},0,0,"firebutton")
 	fire = FireButton:new({})
 	--fire:SetPos(fire.interface:GetWidth(), (display.contentHeight*2/5) - (fire.interface:GetHeight()/2))
-	fire:SetPos(fire.interface.width, (display.contentHeight*2/5) - (fire.interface.height/2))
+	fire:SetPos((display.contentWidth/18), (display.contentHeight*2/5) - (fire.interface.height/2) - (display.contentHeight/9))
 	
 	exiting = false
 	paused = false
@@ -469,7 +485,7 @@ function scene:hide( event )
  
    if ( phase == "will" ) then
 	exiting = true
-	timer.cancel("update")
+	timer.cancel("Update")
 	audio.stop()
    elseif ( phase == "did" ) then
 		fire:Destroy()

@@ -301,7 +301,7 @@ function Graphic:new (o, x, y, g)    --constructor
 		o.height = 20*2
 		local spriteoptions = {
 			frames = {
-				{x = 2, y = 158, width = 46, height = 20}
+				{x = 2, y = 158, width = 46, height = 22}
 			}
 		}
 		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
@@ -319,12 +319,30 @@ function Graphic:new (o, x, y, g)    --constructor
 		o.height = 20*2
 		local spriteoptions = {
 			frames = {
-				{x = 98, y = 158, width = 20, height = 20}
+				{x = 98, y = 158, width = 20, height = 22}
 			}
 		}
 		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
 		local spriteSequence = {
 			name = "pause",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2,2)
+		table.insert(o.sprites, sprite)
+	elseif(g == "creditbutton")then
+		o.width = 72*2
+		o.height = 20*2
+		local spriteoptions = {
+			frames = {
+				{x = 76, y = 23, width = 72, height = 20}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
+		local spriteSequence = {
+			name = "creditbutton",
 			start = 1,
 			count = 1,
 			loopCount = 0
