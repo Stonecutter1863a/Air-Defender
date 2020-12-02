@@ -68,13 +68,13 @@ function scene:show( event )
 		
 		backgrounds = {}
 		
-		if(settings.level == 1)then
+		if(settings:WhatLevel() == 1)then
 			table.insert(backgrounds, Graphic:new({},0,0,"game1"))
 			table.insert(backgrounds, Graphic:new({},0,0,"game1"))
 			table.insert(backgrounds, Graphic:new({},0,0,"game1"))
 			table.insert(backgrounds, Graphic:new({},0,0,"game1"))
 			table.insert(backgrounds, Graphic:new({},0,0,"game1"))
-		elseif(settings.level == 2)then
+		elseif(settings:WhatLevel() == 2)then
 			table.insert(backgrounds, Graphic:new({},0,0,"game2"))
 			table.insert(backgrounds, Graphic:new({},0,0,"game2"))
 			table.insert(backgrounds, Graphic:new({},0,0,"game2"))

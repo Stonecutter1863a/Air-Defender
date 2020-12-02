@@ -194,7 +194,7 @@ function Update()
 		
 		if(fire:IsPressed() == true)then
 			local projectile = playerAvatar:UseWeapon()
-			if(settings.sfx == true)then
+			if(settings:IsSFX() == true)then
 				audio.play(sounds.fire, {channel = 2, loops = 0})
 			end
 			if not (projectile == nil) then
@@ -252,7 +252,7 @@ function Update()
 						j:Delete()
 						table.remove(enemies, i)
 						table.remove(ai, i)
-						if(settings.sfx == true)then
+						if(settings:IsSFX() == true)then
 							audio.play(sounds.explosion, {channel = 4, loops = 0})
 						end
 					end
@@ -266,11 +266,15 @@ function Update()
 					local a = ai[i]
 					table.remove(ai, i)
 					a:Delete()
-					audio.play(sounds.enemymiss, {channel = 5, loops = 0})
+					if(settings:IsSFX() == true)then
+						audio.play(sounds.enemymiss, {channel = 5, loops = 0})
+					end
 					if(playerAvatar:Damage(1))then	-- player has lost
 						audio.stop(1)
-						if(settings.sfx == true)then
+						if(settings:IsSFX() == true)then
 							audio.play(sounds.gameOver, {channel = 1, loops = 0, onComplete = GameOver()})
+						else
+							GameOver()
 						end
 					end
 				end
@@ -355,13 +359,13 @@ function scene:show( event )
 		
 		audio.stop()
 		backdrops = {}
-		if(settings.level == 1)then
+		if(settings:WhatLevel() == 1)then
 			table.insert(backdrops, Graphic:new({},0,0,"game1"))
 			table.insert(backdrops, Graphic:new({},0,0,"game1"))
 			table.insert(backdrops, Graphic:new({},0,0,"game1"))
 			table.insert(backdrops, Graphic:new({},0,0,"game1"))
 			table.insert(backdrops, Graphic:new({},0,0,"game1"))
-		elseif(settings.level == 2)then
+		elseif(settings:WhatLevel() == 2)then
 			table.insert(backdrops, Graphic:new({},0,0,"game2"))
 			table.insert(backdrops, Graphic:new({},0,0,"game2"))
 			table.insert(backdrops, Graphic:new({},0,0,"game2"))

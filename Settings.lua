@@ -13,13 +13,15 @@
 ]]
 local Settings = {}
 local music = true
+local sfx = true
+local level = 1
 
 function Settings:new (o)    --constructor
 	o = o or {}
 	setmetatable(o, self)
 	self.__index = self
 	
-	self.values = {true} --default music on
+	self.values = {true, true, 1} --default music on, sfx on, level 1
 
 	return o
 end
@@ -48,10 +50,24 @@ function Settings:Update()
 		music = false
 		audio.pause(1)
 	end
+	if (self.values[2] == true) then
+		sfx = true
+	elseif (self.values[2] == false) then
+		sfx = false
+	end
+	level = self.values[3]
 end
 
 function Settings:IsMusic()
-	return music
+	return self.values[1]
+end
+
+function Settings:IsSFX()
+	return self.values[2]
+end
+
+function Settings:WhatLevel()
+	return level
 end
 
 return Settings

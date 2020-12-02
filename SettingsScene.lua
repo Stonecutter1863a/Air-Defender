@@ -33,7 +33,13 @@ function scene:show( event )
    		title:SetPos(display.contentCenterX, display.contentCenterY + 190)
 		
 		musicsetting = OptionButton:new(o, 1)
-   		musicsetting:SetPos(display.contentCenterX, display.contentCenterY + 100)
+   		musicsetting:SetPos(display.contentCenterX, display.contentCenterY + 40)
+
+   		sfxsetting = OptionButton:new(o, 2)
+   		sfxsetting:SetPos(display.contentCenterX, display.contentCenterY + 90)
+
+   		levelsetting = OptionButton:new(o, 3)
+   		levelsetting:SetPos(display.contentCenterX, display.contentCenterY + 140)
    
    elseif ( phase == "did" ) then
    
@@ -55,6 +61,10 @@ function scene:hide( event )
 	title=nil
 	musicsetting:Destroy()
 	musicsetting=nil
+	sfxsetting:Destroy()
+	sfxsetting=nil
+	levelsetting:Destroy()
+	levelsetting=nil
  
    end
 end

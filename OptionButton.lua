@@ -23,22 +23,25 @@ function OptionButton:new(o, i)    --constructor
 	setmetatable(o, self)
 	self.__index = self
 	
-	local g = display.newRect(0, 0, 112, 31)
+	local g = display.newRect(0, 0, 80, 30)
 	g:setFillColor(1,1,1)
-	group = display.newGroup()
-	group:insert(g)
-	if (i==1) then
-		text = display.newText(group, "MUSIC",1,1, native.systemFont)
-		text:setFillColor(0,255,0)
-	end
 	o.interface = g
 	--o.interface = widget.newButton(opt)
 
 	function changeSetting()
-		if (Settings:Get(i) == false) then
-			Settings:Set(i, true)
-		else
-			Settings:Set(i, false)
+		value = Settings:Get(i)
+		if (i == 1) or (i == 2) then
+			if (value == false) then
+				Settings:Set(i, true)
+			else
+				Settings:Set(i, false)
+			end
+		elseif (i == 3) then
+			if (value == 1) or (value == 2) then
+				Settings:Set(3, value + 1)
+			else
+				Settings:Set(3, 1)
+			end
 		end
 		Settings:Update()
 	end
@@ -48,14 +51,12 @@ function OptionButton:new(o, i)    --constructor
 end
 
 function OptionButton:SetPos(x,y)
-	group.x = x
-	group.y = y
+	self.interface.x = x
+	self.interface.y = y
 end
 
 function OptionButton:Destroy()
 	self.interface:removeSelf()
-	text:removeSelf()
-	group:removeSelf()
 	self=nil
 end
 
