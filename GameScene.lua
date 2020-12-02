@@ -194,7 +194,9 @@ function Update()
 		
 		if(fire:IsPressed() == true)then
 			local projectile = playerAvatar:UseWeapon()
-			audio.play(sounds.fire, {channel = 2, loops = 0})
+			if(settings.sfx == true)
+				audio.play(sounds.fire, {channel = 2, loops = 0})
+			end
 			if not (projectile == nil) then
 				table.insert(projectiles, projectile)
 			end
@@ -250,7 +252,9 @@ function Update()
 						j:Delete()
 						table.remove(enemies, i)
 						table.remove(ai, i)
-						audio.play(sounds.explosion, {channel = 4, loops = 0})
+						if(settings.sfx == true)then
+							audio.play(sounds.explosion, {channel = 4, loops = 0})
+						end
 					end
 					score = score + 10
 				elseif(
@@ -265,7 +269,9 @@ function Update()
 					audio.play(sounds.enemymiss, {channel = 5, loops = 0})
 					if(playerAvatar:Damage(1))then	-- player has lost
 						audio.stop(1)
-						audio.play(sounds.gameOver, {channel = 1, loops = 0, onComplete = GameOver()})
+						if(settings.sfx == true)then
+							audio.play(sounds.gameOver, {channel = 1, loops = 0, onComplete = GameOver()})
+						end
 					end
 				end
 			end
@@ -477,7 +483,9 @@ function scene:show( event )
 	healthActual = display.newText(healthDefault)
 	
    elseif ( phase == "did" ) then
-	audio.play(sounds.background, {channel = 1, loops = -1})
+	if(settings.music == true)then
+		audio.play(sounds.background, {channel = 1, loops = -1})
+	end
    end
 end
  
