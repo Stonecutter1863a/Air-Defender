@@ -194,7 +194,7 @@ function Update()
 		
 		if(fire:IsPressed() == true)then
 			local projectile = playerAvatar:UseWeapon()
-			if(settings.sfx == true)
+			if(settings.sfx == true)then
 				audio.play(sounds.fire, {channel = 2, loops = 0})
 			end
 			if not (projectile == nil) then
