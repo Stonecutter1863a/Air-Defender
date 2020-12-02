@@ -37,8 +37,8 @@ function Projectile:new(o,x,y,dy,dx,sfx,s,g)	--## needs to play sfx
 end
 
 function Projectile:Update()
-		self.graphic:SetY(self.graphic:GetY() - (self.aimY * self.topspeed))
-		self.graphic:SetX(self.graphic:GetX() + (self.aimX * self.topspeed))
+		self.graphic:SetY(self.graphic:GetY() - (self.aimY * self.topspeed*display.contentHeight/750))
+		self.graphic:SetX(self.graphic:GetX() + (self.aimX * self.topspeed*display.contentWidth/1334))
 end
 
 function Projectile:GetPosX()

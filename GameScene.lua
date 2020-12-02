@@ -15,8 +15,8 @@ local framerateControl = 15
 local exiting = false
 local paused
 
-local groundenemyspeed = 2
-local airenemyspeed = 3
+local groundenemyspeed = 2.2 * display.contentWidth / 1334
+local airenemyspeed = 3 * display.contentWidth / 1334
 
 local SteeringSlider = require("SteeringSlider")
 local FireButton = require("FireButton")
@@ -274,21 +274,21 @@ function Update()
 		
 		SpawnEnemies()
 		
-		backdrops[1]:SetX(backdrops[1]:GetX()-2)
-		backdrops[2]:SetX(backdrops[2]:GetX()-2)
-		backdrops[3]:SetX(backdrops[3]:GetX()-2)
-		backdrops[4]:SetX(backdrops[4]:GetX()-2)
-		backdrops[5]:SetX(backdrops[5]:GetX()-2)
+		backdrops[1]:SetX(backdrops[1]:GetX()-1.8)
+		backdrops[2]:SetX(backdrops[2]:GetX()-1.8)
+		backdrops[3]:SetX(backdrops[3]:GetX()-1.8)
+		backdrops[4]:SetX(backdrops[4]:GetX()-1.8)
+		backdrops[5]:SetX(backdrops[5]:GetX()-1.8)
 		if(backdrops[1]:GetX() < -750)then
-			backdrops[1]:SetX(5250)
+			backdrops[1]:SetX(5245)
 		elseif(backdrops[2]:GetX() < -750)then
-			backdrops[2]:SetX(5250)
+			backdrops[2]:SetX(5245)
 		elseif(backdrops[3]:GetX() < -750)then
-			backdrops[3]:SetX(5250)
+			backdrops[3]:SetX(5245)
 		elseif(backdrops[4]:GetX() < -750)then
-			backdrops[4]:SetX(5250)
+			backdrops[4]:SetX(5245)
 		elseif(backdrops[5]:GetX() < -750)then
-			backdrops[5]:SetX(5250)
+			backdrops[5]:SetX(5245)
 		end
 	else
 		audio.pause(1)
@@ -384,7 +384,7 @@ function scene:show( event )
 	steering.interface.y = (display.contentHeight - steering.interface.height)/2
 	
 	local g = Graphic:new({},0,0,"avatar")
-	playerAvatar = Combatant:new({},3,true,0,15,1,g)
+	playerAvatar = Combatant:new({},3,true,0,15*display.contentHeight/750,1,g)
 	playerAvatar:SetPos(display.contentWidth/6, display.contentHeight/2)
 	
 	pause = MenuButton:new({}, 1, "PauseScene", Graphic:new({},0,0,"pausebutton"))
