@@ -18,14 +18,18 @@ function AI:new (o, aitype)    --constructor
 	setmetatable(o, self)
 	self.__index = self
 	
-	o.type = aitype
+	o.aitype = aitype
+	o.phase = math.round(math.random(0,1))
 	
 	return o
 end
 
 function AI:Update()
-	if(self.type == 0)then
-		return {0,0}
+	if(self.aitype == 1)then
+		self.phase = self.phase + 1/15
+		return{0,self.phase * math.pi}
+	else
+		return nil
 	end
 end
 
