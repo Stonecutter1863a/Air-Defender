@@ -97,7 +97,12 @@ function scene:show( event )
 				filedata = json.decode(instring)
 			end
 			if(filedata ~= nil and filedata.time ~= nil)then
-				besttime = math.max(filedata.time, gameTime)
+				--besttime = math.max(filedata.time, gameTime)
+				if(filedata.time > gameTime)then
+					besttime = gameTime
+				else
+					besttime = filedata.time
+				end
 				--print(filedata.time)
 			else
 				besttime = gameTime
