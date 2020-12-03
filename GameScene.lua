@@ -81,6 +81,7 @@ local healthDefault
 local healthActual
 
 function GameOver()
+	timer.cancel("Update")
 						local options = {
 							effect = "fade",
 							time = 200,
@@ -169,7 +170,7 @@ function SpawnEnemies()
 	end
 end
 
-function Update()
+function UpdateGame()
 	--print(pause:IsPaused())
 	if (pause:IsPaused() == false)then
 		audio.resume(1)
@@ -253,7 +254,7 @@ function Update()
 						table.remove(enemies, i)
 						table.remove(ai, i)
 						if(settings:IsSFX() == true)then
-							audio.play(sounds.explosion, {channel = 4, loops = 0})
+							audio.play(sounds.damage, {channel = 4, loops = 0})
 						end
 					end
 					score = score + 10
@@ -308,7 +309,7 @@ function Update()
 		audio.pause(1)
 	end
 	if(exiting ~= true)then
-		timer.performWithDelay(framerateControl, Update, 1, "update")
+		timer.performWithDelay(framerateControl, UpdateGame, 1, "UpdateGame")
 	end
 end
 
@@ -420,7 +421,6 @@ function scene:show( event )
 	enemyspawntype = 0
 	enemyspawntime = 0
 	
-	timer.performWithDelay(framerateControl, Update, 1)
 	
 	score = 0
 	
@@ -486,12 +486,14 @@ function scene:show( event )
 	}
 	healthActual = display.newText(healthDefault)
 	
+	timer.performWithDelay(framerateControl, UpdateGame, 1)
    elseif ( phase == "did" ) then
 	if(settings:IsMusic() == true)then
 		audio.play(sounds.background, {channel = 1, loops = -1})
 	else
 		audio.pause(1)
 	end
+	
    end
 end
  
@@ -503,9 +505,10 @@ function scene:hide( event )
  
    if ( phase == "will" ) then
 	exiting = true
-	timer.cancel("Update")
+	timer.cancel("UpdateGame")
 	audio.stop()
    elseif ( phase == "did" ) then
+	timer.cancel("UpdateGame")
 		fire:Destroy()
 		pause:Destroy()
 		for i=1,#enemies,1 do

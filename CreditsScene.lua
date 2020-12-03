@@ -60,6 +60,7 @@ function scene:show( event )
    local phase = event.phase
  
    if ( phase == "will" ) then
+		timer.cancel("UpdateGame")
 
 		settings = event.params.settings
 		
@@ -115,8 +116,8 @@ function scene:show( event )
 			align = "center"
 		})
 		
-		timer.performWithDelay(15, Update, 1)
    elseif ( phase == "did" ) then
+		timer.performWithDelay(15, Update, 1)
    end
 end
  

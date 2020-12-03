@@ -404,6 +404,24 @@ function Graphic:new (o, x, y, g)    --constructor
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
 		sprite:scale(2,2)
 		table.insert(o.sprites, sprite)
+	elseif(g == "sfxbutton2")then
+		o.width = 72*2
+		o.height = 20*2
+		local spriteoptions = {
+			frames = {
+				{x = 85, y = 89, width = 36, height = 20}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
+		local spriteSequence = {
+			name = "sfxbutton2",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2,2)
+		table.insert(o.sprites, sprite)
 	elseif(g == "lvlbutton1")then
 		o.width = 72*2
 		o.height = 20*2
@@ -415,6 +433,42 @@ function Graphic:new (o, x, y, g)    --constructor
 		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
 		local spriteSequence = {
 			name = "lvlbutton1",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2,2)
+		table.insert(o.sprites, sprite)
+	elseif(g == "lvlbutton2")then
+		o.width = 72*2
+		o.height = 20*2
+		local spriteoptions = {
+			frames = {
+				{x = 2, y = 133, width = 64, height = 20}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
+		local spriteSequence = {
+			name = "lvlbutton2",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2,2)
+		table.insert(o.sprites, sprite)
+	elseif(g == "lvlbutton3")then
+		o.width = 72*2
+		o.height = 20*2
+		local spriteoptions = {
+			frames = {
+				{x = 69, y = 133, width = 64, height = 20}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
+		local spriteSequence = {
+			name = "lvlbutton3",
 			start = 1,
 			count = 1,
 			loopCount = 0

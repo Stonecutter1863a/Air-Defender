@@ -35,6 +35,8 @@ function scene:show( event )
  
    if ( phase == "will" ) then
    
+		timer.cancel("UpdateGame")
+		timer.cancel("Update")
 		if(settings ~= nil)then
 			--settings = event.params.settings
 		else
@@ -63,6 +65,7 @@ function scene:show( event )
 	else
 		audio.stop(1)
 	end
+		timer.cancel("Update")
    end
 end
  
@@ -73,6 +76,7 @@ function scene:hide( event )
    local phase = event.phase
  
    if ( phase == "will" ) then
+		timer.cancel("Update")
    
    elseif ( phase == "did" ) then
    
