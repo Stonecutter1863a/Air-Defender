@@ -13,6 +13,7 @@ local scene = composer.newScene()
 local MenuButton = require("MenuButton")
 local Settings = require("Settings")
 local Graphic = require("Graphic")
+local json = require("json")
 
 local xScale = display.contentWidth/1334
 local yScale = display.contentHeight/750
