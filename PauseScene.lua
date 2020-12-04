@@ -32,10 +32,10 @@ function scene:show( event )
    if ( phase == "will" ) then
 
    		play = MenuButton:new(o, 2, "GameScene", Graphic:new({},0,0,"resumebutton"))
-   		play:SetPos(display.contentCenterX, display.contentCenterY - 30)
+   		play:SetPos(display.contentCenterX, display.contentCenterY - (30*display.contentHeight/750))
    
    		title = MenuButton:new(o, 0, "TitleScene",Graphic:new({},0,0,"quitbutton"))
-   		title:SetPos(display.contentCenterX, display.contentCenterY + 30)
+   		title:SetPos(display.contentCenterX, display.contentCenterY + (30*display.contentHeight/750))
 		
 		--event.parent:Pause()
 		

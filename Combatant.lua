@@ -87,28 +87,39 @@ function Combatant:GetWidth()
 	return self.graphic:GetWidth()
 end
 
-function Combatant:Update()	--## needs to account for graphic heights
+function Combatant:Halt()
+	self.graphic.sprites[1]:setLinearVelocity(0,0)
+end
+
+function Combatant:Update()
+	--self:Halt()
+	--self.graphic:SetY(self.graphic:GetY() - (self.aimY * self.topspeed))
+	--self.graphic.sprites[1]:applyForce((self.aimX * self.topspeed),(self.aimY * self.topspeed),self.graphic:GetX(),self.graphic:GetY())
 	if(self.isPlayer == true) then
-		self.graphic:SetY(self.graphic:GetY() - (self.aimY * self.topspeed))
+		--self.graphic:SetY(self.graphic:GetY() - (self.aimY * self.topspeed))
+		self.graphic.sprites[1]:setLinearVelocity(0,-(self.aimY * self.topspeed))
 		if(self.graphic:GetY() > display.contentHeight) then
 			self.graphic:SetY(display.contentHeight)
 		elseif(self.graphic:GetY() < 0) then
 			self.graphic:SetY(0)
 		end
+		--self.graphic:SetX(display.contentWidth/6)
 		self.weapon:Update()
 	else
-		self.graphic:SetY(self.graphic:GetY() - (self.aimY * self.topspeed))
+	--self.graphic.sprites[1]:applyForce(-(self.aimX * self.topspeed*display.contentWidth/1334),-(self.aimY * self.topspeed*display.contentHeight/750),self.graphic:GetX(),self.graphic:GetY())
+		--self.graphic:SetY(self.graphic:GetY() - (self.aimY * self.topspeed))
+		self.graphic.sprites[1]:setLinearVelocity(-(self.aimX * self.topspeed),-(self.aimY * self.topspeed))
 		if(self.graphic:GetY() > display.contentHeight - 96) then
 			self.graphic:SetY(display.contentHeight - 96)
 		elseif(self.graphic:GetY() < 96) then
 			self.graphic:SetY(96)
 		end
-		self.graphic:SetX(self.graphic:GetX() - (self.aimX * self.topspeed))
+		--self.graphic:SetX(self.graphic:GetX() - (self.aimX * self.topspeed))
 	end
 end
 
 function Combatant:UseWeapon()
-	return self.weapon:FireProjectile(self.graphic.x,self.graphic.y,0,1,self.isPlayer)
+	return self.weapon:FireProjectile(self.graphic:GetX(),self.graphic:GetY(),0,1,self.isPlayer)
 end
 
 function Combatant:Damage(amount)

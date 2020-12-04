@@ -15,8 +15,14 @@ local framerateControl = 15
 local exiting = false
 local paused
 
-local groundenemyspeed = 2.2 * display.contentWidth / 1334
-local airenemyspeed = 3 * display.contentWidth / 1334
+local groundenemyspeed = 50*2.2 * display.contentWidth / 1334
+local airenemyspeed = 50*3 * display.contentWidth / 1334
+
+local xScale = display.contentWidth / 1334
+local yScale = display.contentHeight / 750
+
+local groundspeed = 1.8 * xScale
+local backspeed = 0.8 * xScale
 
 local SteeringSlider = require("SteeringSlider")
 local FireButton = require("FireButton")
@@ -98,25 +104,25 @@ function SpawnEnemy(enemytype)
 	if(enemytype == 0)then
 		g = Graphic:new({},0,0)
 		table.insert(enemies, Combatant:new({},1,false,nil,groundenemyspeed,1,Graphic:new(o,0,0,"grunt")))
-		enemies[#enemies]:SetPos(display.contentWidth-1, (display.contentHeight-48))
+		enemies[#enemies]:SetPos(display.contentWidth-(1*xScale), (display.contentHeight-(48*yScale)))
 	
 		table.insert(ai, AI:new(o,0))
 	elseif(enemytype == 1)then
 		g = Graphic:new({},0,0)
 		table.insert(enemies, Combatant:new({},1,false,nil,airenemyspeed,1,Graphic:new(o,0,0,"drone")))
-		enemies[#enemies]:SetPos(display.contentWidth-1, enemyspawncenter + (math.random()*(display.contentHeight)/5) - (math.random()*(display.contentHeight)/5))
+		enemies[#enemies]:SetPos(display.contentWidth-(1*xScale), enemyspawncenter + (math.random()*(display.contentHeight)/(5*yScale)) - (math.random()*(display.contentHeight)/(5*yScale)))
 	
 		table.insert(ai, AI:new(o,0))
 	elseif(enemytype == 2)then
 		g = Graphic:new({},0,0)
 		table.insert(enemies, Combatant:new({},1,false,nil,airenemyspeed*2,1,Graphic:new(o,0,0,"fastdrone")))
-		enemies[#enemies]:SetPos(display.contentWidth-1, enemyspawncenter + (math.random()*(display.contentHeight)/5) - (math.random()*(display.contentHeight)/5))
+		enemies[#enemies]:SetPos(display.contentWidth-(1*xScale), enemyspawncenter + (math.random()*(display.contentHeight)/(5*yScale)) - (math.random()*(display.contentHeight)/(5*yScale)))
 	
 		table.insert(ai, AI:new(o,0))
 	elseif(enemytype == 3)then
 		g = Graphic:new({},0,0)
 		table.insert(enemies, Combatant:new({},1,false,nil,airenemyspeed,1,Graphic:new(o,0,0,"smartdrone")))
-		enemies[#enemies]:SetPos(display.contentWidth-1, enemyspawncenter + ((math.random()*(display.contentHeight)/5) - (math.random()*(display.contentHeight)/5)))
+		enemies[#enemies]:SetPos(display.contentWidth-(1*xScale), enemyspawncenter + ((math.random()*(display.contentHeight)/(5*yScale)) - (math.random()*(display.contentHeight)/(5*yScale))))
 	
 		table.insert(ai, AI:new(o,1))
 	end
@@ -134,7 +140,7 @@ end
 
 function SpawnEnemies()
 	if(enemyspawnnumber == 0)then
-		enemyspawncenter = math.random(96,display.contentHeight-96)
+		enemyspawncenter = math.random(96*yScale,display.contentHeight-(96*yScale))
 		enemyspawnnumber = math.random(0,difficulty)
 		enemyspawntypeone = ChooseEnemyType()
 		enemyspawntypetwo = ChooseEnemyType()
@@ -176,10 +182,10 @@ function UpdateGame()
 		audio.resume(1)
 		gameTime = gameTime + 1
 		
-		if(math.floor(gameTime / 7200) < 10)then
-			timerActual.text = timerDefualtText .. "0" .. (math.floor(gameTime / 7200) .. ":")
+		if(math.floor(gameTime / 3600) < 10)then
+			timerActual.text = timerDefualtText .. "0" .. (math.floor(gameTime / 3600) .. ":")
 		else
-			timerActual.text = timerDefualtText .. (math.floor(gameTime / 7200) .. ":")
+			timerActual.text = timerDefualtText .. (math.floor(gameTime / 3600) .. ":")
 		end
 		if(math.floor(gameTime % 3600/60) < 10)then
 			timerActual.text = timerActual.text .. "0" .. (math.floor(gameTime % 3600/60))
@@ -289,21 +295,21 @@ function UpdateGame()
 		
 		SpawnEnemies()
 		
-		backdrops[1]:SetX(backdrops[1]:GetX()-1.8)
-		backdrops[2]:SetX(backdrops[2]:GetX()-1.8)
-		backdrops[3]:SetX(backdrops[3]:GetX()-1.8)
-		backdrops[4]:SetX(backdrops[4]:GetX()-1.8)
-		backdrops[5]:SetX(backdrops[5]:GetX()-1.8)
-		if(backdrops[1]:GetX() < -750)then
-			backdrops[1]:SetX(5245)
-		elseif(backdrops[2]:GetX() < -750)then
-			backdrops[2]:SetX(5245)
-		elseif(backdrops[3]:GetX() < -750)then
-			backdrops[3]:SetX(5245)
-		elseif(backdrops[4]:GetX() < -750)then
-			backdrops[4]:SetX(5245)
-		elseif(backdrops[5]:GetX() < -750)then
-			backdrops[5]:SetX(5245)
+		backdrops[1]:SetX(backdrops[1]:GetX()-(groundspeed))
+		backdrops[2]:SetX(backdrops[2]:GetX()-(groundspeed))
+		backdrops[3]:SetX(backdrops[3]:GetX()-(groundspeed))
+		backdrops[4]:SetX(backdrops[4]:GetX()-(groundspeed))
+		backdrops[5]:SetX(backdrops[5]:GetX()-(groundspeed))
+		if(backdrops[1]:GetX() < -(600*xScale))then
+			backdrops[1]:SetX(4190*xScale)
+		elseif(backdrops[2]:GetX() < -(600*xScale))then
+			backdrops[2]:SetX(4190*xScale)
+		elseif(backdrops[3]:GetX() < -(600*xScale))then
+			backdrops[3]:SetX(4190*xScale)
+		elseif(backdrops[4]:GetX() < -(600*xScale))then
+			backdrops[4]:SetX(4190*xScale)
+		elseif(backdrops[5]:GetX() < -(600*xScale))then
+			backdrops[5]:SetX(4190*xScale)
 		end
 	else
 		audio.pause(1)
@@ -380,35 +386,35 @@ function scene:show( event )
 			table.insert(backdrops, Graphic:new({},0,0,"game3"))
 		end
 		backdrops[1]:SetX(0)
-		backdrops[1]:SetY(display.contentHeight - 750)
-		backdrops[2]:SetX(1500)
-		backdrops[2]:SetY(display.contentHeight - 750)
-		backdrops[3]:SetX(3000)
-		backdrops[3]:SetY(display.contentHeight - 750)
-		backdrops[4]:SetX(4500)
-		backdrops[4]:SetY(display.contentHeight - 750)
-		backdrops[5]:SetX(6000)
-		backdrops[5]:SetY(display.contentHeight - 750)
+		backdrops[1]:SetY(display.contentHeight - (600*yScale))
+		backdrops[2]:SetX(1200*xScale)
+		backdrops[2]:SetY(display.contentHeight - (600*yScale))
+		backdrops[3]:SetX(2399*xScale)
+		backdrops[3]:SetY(display.contentHeight - (600*yScale))
+		backdrops[4]:SetX(3598*xScale)
+		backdrops[4]:SetY(display.contentHeight - (600*yScale))
+		backdrops[5]:SetX(4797*xScale)
+		backdrops[5]:SetY(display.contentHeight - (600*yScale))
 		
 	enemies = {}
 	ai = {}
 	projectiles = {}
 	
 	steering = SteeringSlider:new()
-	steering.interface.x = display.contentWidth - (steering.interface.width * 2)
-	steering.interface.y = (display.contentHeight - steering.interface.height)/2
+	steering.interface.x = display.contentWidth - (steering.interface.width * (2))
+	steering.interface.y = (display.contentHeight - (steering.interface.height))/(2)
 	
 	local g = Graphic:new({},0,0,"avatar")
-	playerAvatar = Combatant:new({},3,true,0,15*display.contentHeight/750,1,g)
-	playerAvatar:SetPos(display.contentWidth/6, display.contentHeight/2)
+	playerAvatar = Combatant:new({},3,true,0,750*display.contentHeight/(750),1,g)
+	playerAvatar:SetPos(display.contentWidth/(6), display.contentHeight/(2))
 	
 	pause = MenuButton:new({}, 1, "PauseScene", Graphic:new({},0,0,"pausebutton"))
-	pause:SetPos((display.contentWidth/18), (display.contentHeight*3/5) - (pause.interface:GetHeight()/2) - (display.contentHeight/9))
+	pause:SetPos((display.contentWidth/(18)), (display.contentHeight*((3/5))) - (pause.interface:GetHeight()/(2)) - (display.contentHeight/(9)))
 	
 	--local h = Graphic:new({},0,0,"firebutton")
 	fire = FireButton:new({})
 	--fire:SetPos(fire.interface:GetWidth(), (display.contentHeight*2/5) - (fire.interface:GetHeight()/2))
-	fire:SetPos((display.contentWidth/18), (display.contentHeight*2/5) - (fire.interface.height/2) - (display.contentHeight/9))
+	fire:SetPos((display.contentWidth/(18)), (display.contentHeight*((2/5))) - (fire.interface:GetHeight()/(2)) - (display.contentHeight/(9)))
 	
 	exiting = false
 	paused = false
@@ -454,10 +460,10 @@ function scene:show( event )
 	timerDefault =
 	{
 		text = timerDefualtText,
-		x = 110,
-		y = 84,
-		fontSize = 24,
-		width = 200,
+		x = 110*xScale,
+		y = 84*yScale,
+		fontSize = 24*xScale,
+		width = 200*xScale,
 		align = "left"
 	}
 	timerActual = display.newText(timerDefault)
@@ -466,10 +472,10 @@ function scene:show( event )
 	scoreDefault =
 	{
 		text = scoreDefualtText,
-		x = 110,
-		y = 56,
-		width = 200,
-		fontSize = 24,
+		x = 110*xScale,
+		y = 56*yScale,
+		width = 200*xScale,
+		fontSize = 24*xScale,
 		align = "left"
 	}
 	scoreActual = display.newText(scoreDefault)
@@ -478,10 +484,10 @@ function scene:show( event )
 	healthDefault =
 	{
 		text = healthDefualtText,
-		x = 110,
-		y = 112,
-		width = 200,
-		fontSize = 24,
+		x = 110*xScale,
+		y = 112*yScale,
+		width = 200*xScale,
+		fontSize = 24*xScale,
 		align = "left"
 	}
 	healthActual = display.newText(healthDefault)

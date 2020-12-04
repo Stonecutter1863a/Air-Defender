@@ -14,6 +14,9 @@ local MenuButton = require("MenuButton")
 local Settings = require("Settings")
 local Graphic = require("Graphic")
 
+local xScale = display.contentWidth/1334
+local yScale = display.contentHeight/750
+
 local music
 local settings
 local play
@@ -47,20 +50,23 @@ function scene:show( event )
 			settings.music = true
 		end
 
-		background = display.newImageRect("Assets/Sprites/title_screen.png", display.contentWidth, display.contentWidth)
-		background.x = display.contentCenterX
-		background.y = display.contentCenterY - 80
+		--background = display.newImageRect("Assets/Sprites/title_screen.png", display.contentWidth, display.contentWidth)
+		--background.x = display.contentCenterX
+		--background.y = display.contentCenterY - (80*yScale)
+		background = Graphic:new({},0,0,"title")
+		background:SetX(display.contentWidth/2)
+		background:SetY(display.contentHeight/2 - (80 * display.contentHeight/750))
 
    		play = MenuButton:new(o, 0, "GameScene", Graphic:new({},0,0,"playbutton"))
-   		play:SetPos(display.contentCenterX - 300, display.contentCenterY  + 250)
+   		play:SetPos(display.contentCenterX - (300*xScale), display.contentCenterY  + (250*yScale))
 		play:SetParams({settings = settings})
    
    		options = MenuButton:new(o, 0, "SettingsScene",Graphic:new({},0,0,"settingsbutton"))
-   		options:SetPos(display.contentCenterX, display.contentCenterY + 250)
+   		options:SetPos(display.contentCenterX, display.contentCenterY + (250*yScale))
 		options:SetParams({settings = settings})
 		
    		credits = MenuButton:new(o, 0, "CreditsScene",Graphic:new({},0,0,"creditbutton"))
-   		credits:SetPos(display.contentCenterX + 300, display.contentCenterY + 250)
+   		credits:SetPos(display.contentCenterX + (300*xScale), display.contentCenterY + (250*yScale))
 		credits:SetParams({settings = settings})
 		
    elseif ( phase == "did" ) then

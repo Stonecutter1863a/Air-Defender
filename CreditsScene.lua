@@ -37,9 +37,9 @@ function Update()
 		end
 		
 		for i=1,#backgrounds,1 do
-			backgrounds[i]:SetX(backgrounds[i]:GetX()-2)
-			if(backgrounds[i]:GetX() < -750)then
-				backgrounds[i]:SetX(5250)
+			backgrounds[i]:SetX(backgrounds[i]:GetX()-(2 * display.contentWidth / 1334))
+			if(backgrounds[i]:GetX() < -(600 * display.contentWidth / 1334))then
+				backgrounds[i]:SetX((4190 * display.contentWidth / 1334))
 			end
 		end
 	
@@ -89,18 +89,18 @@ function scene:show( event )
 			table.insert(backgrounds, Graphic:new({},0,0,"game3"))
 		end
 		backgrounds[1]:SetX(0)
-		backgrounds[1]:SetY(display.contentHeight - 750)
-		backgrounds[2]:SetX(1500)
-		backgrounds[2]:SetY(display.contentHeight - 750)
-		backgrounds[3]:SetX(3000)
-		backgrounds[3]:SetY(display.contentHeight - 750)
-		backgrounds[4]:SetX(4500)
-		backgrounds[4]:SetY(display.contentHeight - 750)
-		backgrounds[5]:SetX(6000)
-		backgrounds[5]:SetY(display.contentHeight - 750)
+		backgrounds[1]:SetY(display.contentHeight - (600 * display.contentHeight / 750))
+		backgrounds[2]:SetX(1200*display.contentWidth/1334)
+		backgrounds[2]:SetY(display.contentHeight - (600 * display.contentHeight / 750))
+		backgrounds[3]:SetX(2399*display.contentWidth/1334)
+		backgrounds[3]:SetY(display.contentHeight - (600 * display.contentHeight / 750))
+		backgrounds[4]:SetX(3598*display.contentWidth/1334)
+		backgrounds[4]:SetY(display.contentHeight - (600 * display.contentHeight / 750))
+		backgrounds[5]:SetX(4797*display.contentWidth/1334)
+		backgrounds[5]:SetY(display.contentHeight - (600 * display.contentHeight / 750))
 
    		title = MenuButton:new(o, 0, "TitleScene", Graphic:new({},0,0,"backbutton"))
-   		title:SetPos(display.contentCenterX/3, display.contentCenterY + 190)
+   		title:SetPos(display.contentCenterX/(3*display.contentWidth/1334), display.contentCenterY + (190 * display.contentHeight / 750))
 		
    
 		
@@ -111,8 +111,8 @@ function scene:show( event )
 		creditdisplay = display.newText({
 			text=credittext,
 			x=display.contentCenterX,
-			y=display.contentHeight*5/3,
-			width = display.contentWidth*2/3,
+			y=(display.contentHeight*5/3)*display.contentWidth/1334,
+			width = (display.contentWidth*2/3)*display.contentWidth/1334,
 			align = "center"
 		})
 		

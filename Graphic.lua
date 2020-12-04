@@ -49,8 +49,11 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		Physics.addBody(sprite,"kinematic",{outline=graphics.newOutline(4,spriteSheet,1)})
+		--Physics.addBody(sprite,"dynamic",{outline=graphics.newOutline(4,spriteSheet,1)})
+		Physics.addBody(sprite,"kinematic",{radius = 50})
+		--sprite.isSensor = true
 		sprite.tag = "enemy"
+		sprite:scale(display.contentWidth/1334,display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "drone")then
 		o.simulate = true
@@ -69,8 +72,11 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		Physics.addBody(sprite,"kinematic",{outline=graphics.newOutline(4,spriteSheet,1)})
+		--Physics.addBody(sprite,"dynamic",{outline=graphics.newOutline(4,spriteSheet,1)})
+		Physics.addBody(sprite,"kinematic",{radius = 50})
+		--sprite.isSensor = true
 		sprite.tag = "enemy"
+		sprite:scale(display.contentWidth/1334,display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "fastdrone")then
 		o.simulate = true
@@ -89,8 +95,11 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local alien3 = display.newSprite(alien3Sheet,alien3Sequence)
-		Physics.addBody(alien3,"kinematic",{outline=graphics.newOutline(4,alien3Sheet,1)})
+		--Physics.addBody(alien3,"dynamic",{outline=graphics.newOutline(4,alien3Sheet,1)})
+		Physics.addBody(alien3,"kinematic",{radius = 50})
 		alien3.tag = "enemy"
+		--alien3.isSensor = true
+		alien3:scale(display.contentWidth/1334,display.contentHeight/750)
 		table.insert(o.sprites, alien3)
 	elseif(g == "smartdrone")then
 		o.simulate = true
@@ -109,8 +118,11 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local alien1 = display.newSprite(alien1Sheet,alien1Sequence)
-		Physics.addBody(alien1,"kinematic",{outline=graphics.newOutline(4,alien1Sheet,1)})
+		--Physics.addBody(alien1,"dynamic",{outline=graphics.newOutline(4,alien1Sheet,1)})
+		Physics.addBody(alien1,"kinematic",{radius = 50})
 		alien1.tag = "enemy"
+		--alien1.isSensor = true
+		alien1:scale(display.contentWidth/1334,display.contentHeight/750)
 		table.insert(o.sprites, alien1)
 	elseif(g == "projectile")then
 		o.simulate = true
@@ -131,10 +143,10 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 1
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(2,2)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
 		sprite.tag = "projectile"
 		sprite.parent = o
-		Physics.addBody(sprite,"dynamic",{radius=20})
+		Physics.addBody(sprite,"dynamic",{radius = 20})
 		table.insert(o.sprites, sprite)
 	elseif(g == "bomb")then
 	elseif(g == "avatar")then
@@ -153,8 +165,29 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		--Physics.addBody(sprite,"dynamic",{outline=graphics.newOutline(4,spriteSheet,1)})
+		Physics.addBody(sprite,"dynamic",{radius=50})
+		sprite.isSensor = true
+		sprite:scale(display.contentWidth/1334,display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "title")then
+		o.width = 1500
+		o.height = 1500
+		local spriteoptions = {
+			frames = {
+				{x = 0, y = 0, width = 500, height = 500}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/title_screen.png", spriteoptions)
+		local spriteSequence = {
+			name = "title",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2.7*display.contentWidth/1334,2.7*display.contentHeight/750)
+		table.insert(o.sprites, sprite)
 	elseif(g == "titlebutton")then
 	elseif(g == "results")then
 	elseif(g == "game1")then
@@ -173,7 +206,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(1, 1)
+		sprite:scale(0.8*display.contentWidth/1334,0.8*display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "game2")then
 		o.width = 1500
@@ -191,7 +224,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(1, 1)
+		sprite:scale(0.8*display.contentWidth/1334,0.8*display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "game3")then
 		o.width = 1500
@@ -209,7 +242,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(1, 1)
+		sprite:scale(0.8*display.contentWidth/1334,0.8*display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "playbutton")then
 		o.width = 60*2
@@ -227,7 +260,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(2,2)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "backbutton")then
 		o.width = 46*2
@@ -245,7 +278,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(2,2)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "resumebutton")then
 		o.width = 66*2
@@ -263,7 +296,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(2,2)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "quitbutton")then
 		o.width = 44*2
@@ -281,7 +314,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(2,2)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "settings")then
 	elseif(g == "settingsbutton")then
@@ -300,7 +333,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(2,2)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "firebutton")then
 		o.width = 46*2
@@ -318,7 +351,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(2,2)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "pausebutton")then
 		o.width = 20*2
@@ -336,7 +369,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(2,2)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "creditbutton")then
 		o.width = 72*2
@@ -354,7 +387,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(2,2)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "musicbutton1")then
 		o.width = 72*2
@@ -372,7 +405,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(2,2)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "musicbutton2")then
 		o.width = 72*2
@@ -390,7 +423,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(2,2)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "sfxbutton1")then
 		o.width = 72*2
@@ -408,7 +441,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(2,2)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "sfxbutton2")then
 		o.width = 72*2
@@ -426,7 +459,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(2,2)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "lvlbutton1")then
 		o.width = 72*2
@@ -444,7 +477,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(2,2)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "lvlbutton2")then
 		o.width = 72*2
@@ -462,7 +495,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(2,2)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "lvlbutton3")then
 		o.width = 72*2
@@ -480,7 +513,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(2,2)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	end
 	
@@ -524,16 +557,18 @@ function Graphic:Destroy()
 end
 
 function Graphic:GetX()
-	return self.x
+	return self.sprites[1].x
 end
 function Graphic:SetX(x)
-	self.x = x
-	for i, j in ipairs(self.sprites) do
-		j.x = x
+	if(self~=nil)then
+		self.x = x
+		for i, j in ipairs(self.sprites) do
+			j.x = x
+		end
 	end
 end
 function Graphic:GetY()
-	return self.y
+	return self.sprites[1].y
 end
 function Graphic:SetY(y)
 	self.y = y

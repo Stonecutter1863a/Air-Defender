@@ -67,15 +67,16 @@ function scene:show( event )
 			table.insert(backgrounds, Graphic:new({},0,0,"game3"))
 			table.insert(backgrounds, Graphic:new({},0,0,"game3"))
 		end
+		
 		backgrounds[1]:SetX(0)
-		backgrounds[1]:SetY(display.contentHeight - 750)
-		backgrounds[2]:SetX(1500)
-		backgrounds[2]:SetY(display.contentHeight - 750)
-		backgrounds[3]:SetX(3000)
-		backgrounds[3]:SetY(display.contentHeight - 750)
+		backgrounds[1]:SetY(display.contentHeight - (600*display.contentHeight/750))
+		backgrounds[2]:SetX(1200*display.contentWidth/1334)
+		backgrounds[2]:SetY(display.contentHeight - (600*display.contentHeight/750))
+		backgrounds[3]:SetX(2399*display.contentWidth/1334)
+		backgrounds[3]:SetY(display.contentHeight - (600*display.contentHeight/750))
 
    		title = MenuButton:new(o, 0, "TitleScene", Graphic:new({},0,0,"quitbutton"))
-   		title:SetPos(display.contentCenterX, display.contentCenterY + 190)
+   		title:SetPos(display.contentCenterX, display.contentCenterY + (190*display.contentWidth/1334))
 		
    
 		local inpath = system.pathForFile("AirDefender.personalbests.json", system.DocumentsDirectory)
@@ -135,10 +136,10 @@ function scene:show( event )
 		scoretext = "Your score was   :  " .. score
 		
 		
-		if(math.floor(besttime / 7200) < 10)then
-			besttimetext = besttimetext .. "0" .. (math.floor(besttime / 7200) .. ":")
+		if(math.floor(besttime / 3600) < 10)then
+			besttimetext = besttimetext .. "0" .. (math.floor(besttime / 3600) .. ":")
 		else
-			besttimetext = besttimetext .. (math.floor(besttime / 7200) .. ":")
+			besttimetext = besttimetext .. (math.floor(besttime / 3600) .. ":")
 		end
 		if(math.floor(besttime % 3600/60) < 10)then
 			besttimetext = besttimetext .. "0" .. (math.floor(besttime % 3600/60))
@@ -147,10 +148,10 @@ function scene:show( event )
 			besttimetext = besttimetext .. (math.floor(besttime % 3600/60))
 		end
 		
-		if(math.floor(gameTime / 7200) < 10)then
-			timetext = timetext .. "0" .. (math.floor(gameTime / 7200) .. ":")
+		if(math.floor(gameTime / 3600) < 10)then
+			timetext = timetext .. "0" .. (math.floor(gameTime / 3600) .. ":")
 		else
-			timetext = timetext .. (math.floor(gameTime / 7200) .. ":")
+			timetext = timetext .. (math.floor(gameTime / 3600) .. ":")
 		end
 		if(math.floor(gameTime % 3600/60) < 10)then
 			timetext = timetext .. "0" .. (math.floor(gameTime % 3600/60))
@@ -164,7 +165,7 @@ function scene:show( event )
 			text=besttimetext,
 			x=display.contentCenterX,
 			y=display.contentCenterY - (112 * display.contentHeight / 750),
-			width = display.contentWidth*2/3,
+			width = (display.contentWidth*2/3),
 			align = "left"
 		})
 		bestscoredisplay = display.newText({

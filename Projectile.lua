@@ -43,8 +43,11 @@ function Projectile:new(o,x,y,dy,dx,sfx,s,g)	--## needs to play sfx
 	
 	function o.collide(event)
 		--if(event.phase == "end")then
-			timer.performWithDelay(30,o.Reset,1)
+			--timer.performWithDelay(30,o.Reset,1)
 		--end
+		if(o.graphic.sprites[1]:getAngularVelocity() < 1)then
+			o.graphic.sprites[1]:applyAngularImpulse(300)
+		end
 	end
 	
 	o.graphic.sprites[1]:applyForce((dx * s*display.contentWidth/1334),(dy * s*display.contentHeight/750), x,y)
@@ -68,6 +71,9 @@ end
 
 function Projectile:Reset()
 	self:setLinearVelocity((self.aimX * self.topspeed*display.contentWidth/1334),(self.aimY * self.topspeed*display.contentHeight/750))
+
+	--self.graphic.sprites[1]:setLinearVelocity(0,0)
+	--self:applyForce((self.aimX * self.topspeed*display.contentWidth/1334),(self.aimY * self.topspeed*display.contentHeight/750),self.graphic:GetX(),self.graphic:GetY())
 end
 
 function Projectile:Delete()

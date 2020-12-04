@@ -14,6 +14,7 @@
 		height=buttonHeight,
 	}
 
+local Graphic = require("Graphic")
 
 --[[
 	Class FireButton
@@ -67,13 +68,15 @@ function FireButton:new (o, g)    --constructor
 			count = 1,
 			loopCount = 0
 		}
-		local sprite = display.newSprite(spriteSheet,spriteSequence)
-		sprite:scale(1.5,1.5)
+		--local sprite = display.newSprite(spriteSheet,spriteSequence)
+		--sprite:scale(1.5,1.5)
+		
+		local sprite = Graphic:new({},0,0,"firebutton")
 		
 	o.interface = sprite
-	o.interface.height = 30
-	o.interface.width = 69
-	o.interface.isPressed = false
+	--o.interface.height = 30
+	--o.interface.width = 69
+	o.interface.sprites[1].isPressed = false
 	--o.interface = widget.newButton(opt)
 	o.interface:addEventListener("touch", FireButton.touched)
 	
@@ -81,14 +84,14 @@ function FireButton:new (o, g)    --constructor
 end
 
 function FireButton:IsPressed()
-	return self.interface.isPressed
+	return self.interface.sprites[1].isPressed
 end
 
 function FireButton:SetPos(x,y)
 	--self.interface:SetX(x)
 	--self.interface:SetY(y)
-	self.interface.x = x
-	self.interface.y = y
+	self.interface:SetX(x)
+	self.interface:SetY(y)
 end
 --[[
 function FireButton:Reset()
@@ -97,8 +100,8 @@ end]]
 
 function FireButton:Destroy()
 	self.interface:removeEventListener("touch", FireButton.touched)
-	--self.interface:Destroy()
-	self.interface:removeSelf()
+	self.interface:Destroy()
+	--self.interface:removeSelf()
 	self.interface = nil
 		for i=1,#self,1 do
 			local j = self[#self]
