@@ -214,11 +214,28 @@ function Graphic:new (o, x, y, g, p)    --constructor
 		sprite:scale(3*display.contentWidth/1334,3*display.contentHeight/750)
 		sprite.tag = "projectile"
 		sprite.parent = o
-		Physics.addBody(sprite,"dynamic",{shape = 0,0, 100*display.contentWidth/1334,0, 100*display.contentWidth/1334,120*display.contentHeight/750, 0,120*display.contentHeight/750})
+		function makeExplosionHurt(event)
+			local obj=event.source.params.obj
+			if not (Physics.addBody(obj,"dynamic",{shape = 0,0, 100*display.contentWidth/1334,0, 100*display.contentWidth/1334,120*display.contentHeight/750, 0,120*display.contentHeight/750}))then
+				print("physics.addBody error is being handled.")
+				local tm = timer.performWithDelay(1,makeExplosionHurt)
+				tm.params = {obj=obj}
+			else
+				obj.gravityScale = 0.2*display.contentHeight/750
+				obj.isSensor = true
+				obj.isBullet = true
+			end
+		end
+		if not (Physics.addBody(sprite,"dynamic",{shape = 0,0, 100*display.contentWidth/1334,0, 100*display.contentWidth/1334,120*display.contentHeight/750, 0,120*display.contentHeight/750}))then
+			print("physics.addBody error is being handled.")
+			local tm = timer.performWithDelay(1,makeExplosionHurt)
+			tm.params = {obj=sprite}
+		else
+			sprite.gravityScale = 0.2*display.contentHeight/750
+			sprite.isSensor = true
+			sprite.isBullet = true
+		end
 		sprite:play()
-		sprite.gravityScale = 0.2*display.contentHeight/750
-		sprite.isSensor = true
-		sprite.isBullet = true
 		table.insert(o.sprites, sprite)
 	elseif(g == "avatar")then
 		o.width = 96

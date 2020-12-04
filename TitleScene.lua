@@ -61,18 +61,15 @@ function scene:show( event )
 					local filedata
 					for line in infile:lines() do
 						instring = line
-						print(instring)
+						--print(instring)
 					end
 					if(instring ~= nil)then
 						filedata = json.decode(instring)
 					end
 					if(filedata ~= nil)then
 						print("settings file was not empty")
-						print (filedata)
-						for i,j in pairs(filedata) do
-							print(i)
-							print(j)
-							Settings:Set(i, j)
+						for i=1,#filedata,1 do
+							settings:Set(i,filedata[i])
 						end
 					else
 						print("settings file was empty")
