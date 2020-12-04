@@ -10,6 +10,8 @@ local Explosion = {}
 
 function Explosion:new(o, x,y)
 	o = o or {}
+	setmetatable(o, self)
+	self_index = self
 	
 	o.graphics = {Graphic:new({},0,0,"explosion"),Graphic:new({},0,0,"explosion")}
 	o.graphics[1]:SetX(x)
@@ -26,12 +28,18 @@ function Explosion:new(o, x,y)
 		if(event.phase == "ended")then
 			o.graphics[1]:Destroy()
 			o.graphics[2]:Destroy()
+			o.graphics = nil
 		end
 	end
 	
 	
 	o.graphics[1].sprites[1]:addEventListener("sprite", Kill)
 	
+	return o
+end
+
+function Explosion:Update()
+
 end
 
 function Explosion:Destroy()

@@ -99,7 +99,11 @@ function Projectile:BulletType()
 end
 
 function Projectile:GetPosX()
-	return self.graphic.sprites[1].x
+	if(self.graphic.sprites[1] ~= nil)then
+		return self.graphic.sprites[1].x
+	else
+		return nil
+	end
 end
 function Projectile:GetPosY()
 	if(self ~= nil)then

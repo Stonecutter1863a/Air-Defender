@@ -47,9 +47,9 @@ function Bomb:Update()
 	if(vy >= vx)then
 		self.graphic.sprites[1]:play()
 	end]]
-	if(self.graphic.sprites[1].y > display.contentHeight)then
+	if(self ~= nil and self.graphic ~= nil and self.graphic.sprites~=nil and self.graphic.sprites[1] ~=nil and self.graphic.sprites[1].y > display.contentHeight)then
 		--self:Destroy()
-	elseif(self.graphic.sprites[1].y > display.contentHeight*8/10)then
+	elseif(self ~= nil and self.graphic ~= nil and self.graphic.sprites~=nil and self.graphic.sprites[1] ~=nil and self.graphic.sprites[1].y > display.contentHeight*8/10)then
 		self:Explode()
 	end
 end
@@ -64,6 +64,10 @@ end
 
 function Bomb:HasExploded()
 	return self.spent
+end
+
+function Bomb:GetExplosion()
+	return self.explosion
 end
 
 function Bomb:Explode()

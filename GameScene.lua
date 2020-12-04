@@ -41,6 +41,7 @@ local settings
 local spawner
 local enemies
 local projectiles
+local explosions
 local ai
 local score
 local difficulty
@@ -223,46 +224,53 @@ function UpdateGame()
 		for i=1,n,1 do
 		--print("updating projectile")
 			local j = projectiles[n-(i-1)]
-			j:Update()
-		--print(j:GetPosX())
-			if(j:GetPosX() > display.contentWidth or j:GetPosY() > display.contentHeight)then
-				--print("it went too far!")
-				table.remove(projectiles, n-(i-1))
-				j:Destroy()
-			elseif(j:BulletType() ~= "defualt" and j:HasExploded() == true)then
-				--print("Exploded!")
-				projectiles[i] = j.explosion
-				j:Destroy()
-				--print("cleaned up bombshell")
-			elseif(j.isBomb ~= nil and j.GetPosY()~= nil and j.GetPosY() > display.contentHeight*9/10)then
-				j:Explode()
-			elseif(j.graphics ~= nil
-					and
-					(j:GetPosX() > display.contentWidth
-					or j:GetPosX() < 0
-					or j:GetPosY() > display.contentHeight
-					or j:GetPosY() < 0)
-			)then
-				print("it went too far!")
-				table.remove(projectiles, n-(i-1))
-				j:Destroy()
-			--[[else
-				for k,l in ipairs(enemies)do
-					if(
-						j:GetPosY() <= l:GetPosY()+l:GetHeight()
-						and j:GetPosY() >= l:GetPosY()-l:GetHeight()
-						and j:GetPosX() <= l:GetPosX()+l:GetWidth()
-						and j:GetPosX() >= l:GetPosX()-l:GetWidth()
-					)then	-- projectile has collided with the enemy
-						if (l:Damage(1) == true)then
-							l:Delete()
-							table.remove(enemies, k)
-							table.remove(ai, k)
-							audio.play(sounds.explosion, {channel = 4, loops = 0})
-						end
-						score = score + 100
+			--local j = projectiles[i]
+			if(j~= nil)then
+				j:Update()
+				--print(j:GetPosX())
+				if(j:GetPosX()~=nil)then
+					if(j:GetPosX() > display.contentWidth or j:GetPosY() > display.contentHeight)then
+						--print("it went too far!")
+						table.remove(projectiles, n-(i-1))
+						j:Destroy()
+					elseif(j:BulletType() ~= "defualt" and j:HasExploded() == true)then
+						--print("Exploded!")
+						table.remove(projectiles, n-(i-1))
+						--print(j:GetExplosion())
+						table.insert(explosions, j:GetExplosion())
+						j:Destroy()
+						--print("cleaned up bombshell")
+					elseif(j.isBomb ~= nil and j.GetPosY()~= nil and j.GetPosY() > display.contentHeight*9/10)then
+						j:Explode()
+					elseif(j.graphics ~= nil
+							and
+							(j:GetPosX() > display.contentWidth
+							or j:GetPosX() < 0
+							or j:GetPosY() > display.contentHeight
+							or j:GetPosY() < 0)
+					)then
+						--print("it went too far!")
+						table.remove(projectiles, n-(i-1))
+						j:Destroy()
+					--[[else
+						for k,l in ipairs(enemies)do
+							if(
+								j:GetPosY() <= l:GetPosY()+l:GetHeight()
+								and j:GetPosY() >= l:GetPosY()-l:GetHeight()
+								and j:GetPosX() <= l:GetPosX()+l:GetWidth()
+								and j:GetPosX() >= l:GetPosX()-l:GetWidth()
+							)then	-- projectile has collided with the enemy
+								if (l:Damage(1) == true)then
+									l:Delete()
+									table.remove(enemies, k)
+									table.remove(ai, k)
+									audio.play(sounds.explosion, {channel = 4, loops = 0})
+								end
+								score = score + 100
+							end
+						end]]
 					end
-				end]]
+				end
 			end
 		end
 		
@@ -311,6 +319,12 @@ function UpdateGame()
 						end
 					end
 				end
+			end
+		end
+		local n = #explosions
+		for i=1,#explosions,1 do
+			if(explosions[n-(i-1)] == nil)then
+				table.remove(explosions[n-(i-1)])
 			end
 		end
 		
@@ -364,10 +378,34 @@ end
 function scene:Unpause()
 		pause:Unpause()
 		Physics.start()
+		for i=1,#explosions,1 do
+			local j = explosions[#explosions]
+			if(j.graphics~=nil)then
+				j.graphics[1].sprites[1]:play()
+				j.graphics[2].sprites[1]:play()
+			end
+		end
+		for i=1,#projectiles,1 do
+			local j = projectiles[#projectiles]
+			j.graphics.sprites[1]:play()
+		end
 end
 
 function scene:Pause()
 	Physics.pause()
+		for i=1,#explosions,1 do
+		print("projectile paused")
+			local j = explosions[#explosions+1-i]
+			if(j.graphics~=nil)then
+				j.graphics[1].sprites[1]:pause()
+				j.graphics[2].sprites[1]:pause()
+			end
+		end
+		for i=1,#projectiles,1 do
+		print("projectile paused")
+			local j = projectiles[#projectiles+1-i]
+			j.graphics.sprites[1]:pause()
+		end
 end
 
 --[[function SetDifficulty()
@@ -480,6 +518,7 @@ function scene:show( event )
 	enemies = {}
 	ai = {}
 	projectiles = {}
+	explosions = {}
 	
 	steering = SteeringSlider:new()
 	steering.interface.x = display.contentWidth - (steering.interface.width * (2))
@@ -615,6 +654,16 @@ function scene:hide( event )
 			local j = projectiles[#projectiles]
 			table.remove(projectiles, #projectiles)
 			j:Destroy()
+		end
+		for i=1,#explosions,1 do
+			local j = explosions[#explosions]
+			table.remove(explosions, #explosions)
+			if(j.graphics~=nil and j.Destroy ~= nil)then
+				j:Destroy()
+				j = nil
+			else
+				j = nil
+			end
 		end
 		for i=1,#backdrops,1 do
 			local j = backdrops[#backdrops]
