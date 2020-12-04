@@ -45,10 +45,10 @@ function Update()
 				backgrounds[i]:SetX((4190 * display.contentWidth / 1334))
 			end
 		end
-		for i=1,#backgrounds,1 do
-			backgrounds[i]:SetX(backgrounds[i]:GetX()-(0.8 * display.contentWidth / 1334))
-			if(backgrounds[i]:GetX() < -(600 * display.contentWidth / 1334))then
-				backgrounds[i]:SetX((4190 * display.contentWidth / 1334))
+		for i=1,#distBackdrops,1 do
+			distBackdrops[i]:SetX(distBackdrops[i]:GetX()-(0.8 * display.contentWidth / 1334))
+			if(distBackdrops[i]:GetX() < -(600 * display.contentWidth / 1334))then
+				distBackdrops[i]:SetX((4190 * display.contentWidth / 1334))
 			end
 		end
 	
