@@ -124,10 +124,11 @@ function SpawnEnemy(enemytype)
 		table.insert(ai, AI:new(o,0))
 	elseif(enemytype == 3)then
 		g = Graphic:new({},0,0)
-		table.insert(enemies, Combatant:new({},1,false,nil,airenemyspeed,1,Graphic:new(o,0,0,"smartdrone")))
-		enemies[#enemies]:SetPos(display.contentWidth-(1*xScale), enemyspawncenter + ((math.random()*(display.contentHeight)/(5*yScale)) - (math.random()*(display.contentHeight)/(5*yScale))))
+		local ypos = enemyspawncenter + ((math.random()*(display.contentHeight)/(5*yScale)) - (math.random()*(display.contentHeight)/(5*yScale)))
+		table.insert(enemies, Combatant:new({},1,false,nil,airenemyspeed*0.8,1,Graphic:new(o,0,0,"smartdrone")))
+		enemies[#enemies]:SetPos(display.contentWidth-(1*xScale), ypos)
 	
-		table.insert(ai, AI:new(o,1))
+		table.insert(ai, AI:new(o,1--[[,ypos]]))
 	end
 	
 	--Physics.addBody(enemies[#enemies], "dynamic")

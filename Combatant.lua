@@ -60,9 +60,9 @@ function Combatant:Steer(dir)
 	local adjacent = display.contentWidth - self.graphic:GetX()
 	local hypot = math.sqrt((opposite^2) + (adjacent^2))
 	self.aimY = (opposite/hypot)
-	if(self.isPlayer == true and self.aimY > 0.01)then
+	if(--[[self.isPlayer == true and]] self.aimY > 0.01)then
 		self.aimY = 1
-	elseif(self.isPlayer == true and self.aimY < -0.01)then
+	elseif(--[[self.isPlayer == true and]] self.aimY < -0.01)then
 		self.aimY = -1
 	elseif(self.isPlayer == true)then
 		self.aimY = 0
