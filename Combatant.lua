@@ -46,7 +46,7 @@ function Combatant:new(o,h,p,w,t,a,g)
 	o.graphic = g
 	
 	if(p == false)then
-		g.sprites[1]:addEventListener("collision", Collide)
+		o.graphic.sprites[1]:addEventListener("collision", Collide)
 		o.collided = false
 	end
 	return o

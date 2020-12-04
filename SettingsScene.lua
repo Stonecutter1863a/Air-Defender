@@ -58,14 +58,14 @@ function scene:show( event )
 	local Settings = Settings
 
    		title = MenuButton:new(o, 0, "TitleScene", Graphic:new({},0,0,"backbutton"),self)
-   		title:SetPos(display.contentCenterX, display.contentCenterY + 190)
+   		title:SetPos(display.contentCenterX + 400, display.contentCenterY + 250)
 		
 		if(Settings:Get(1)==true)then
 			musicsetting = OptionButton:new(o, 1, Graphic:new({},0,0,"musicbutton1"),self)
 		else
 			musicsetting = OptionButton:new(o, 1, Graphic:new({},0,0,"musicbutton2"),self)
 		end
-   		musicsetting:SetPos(display.contentCenterX, display.contentCenterY + 40)
+   		musicsetting:SetPos(display.contentCenterX - 400, display.contentCenterY + 250)
 
 
 		if(Settings:Get(2)==true)then
@@ -73,7 +73,7 @@ function scene:show( event )
 		else
 			sfxsetting = OptionButton:new(o, 2, Graphic:new({},0,0,"sfxbutton2"),self)
 		end
-   		sfxsetting:SetPos(display.contentCenterX, display.contentCenterY + 90)
+   		sfxsetting:SetPos(display.contentCenterX - 125, display.contentCenterY + 250)
 
 		if(Settings:Get(3)==1)then
 			levelsetting = OptionButton:new(o, 3, Graphic:new({},0,0,"lvlbutton1"),self)
@@ -82,7 +82,7 @@ function scene:show( event )
 		else
 			levelsetting = OptionButton:new(o, 3, Graphic:new({},0,0,"lvlbutton3"),self)
 		end
-   		levelsetting:SetPos(display.contentCenterX, display.contentCenterY + 140)
+   		levelsetting:SetPos(display.contentCenterX + 125, display.contentCenterY + 250)
    
    elseif ( phase == "did" ) then
    

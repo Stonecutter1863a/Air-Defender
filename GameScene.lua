@@ -9,7 +9,7 @@ local scene = composer.newScene()
 
 local params
 
-local Physics = require("physics")
+Physics = require("physics")
 
 local framerateControl = 15
 local exiting = false

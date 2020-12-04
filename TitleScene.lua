@@ -19,6 +19,7 @@ local settings
 local play
 local options
 local credits
+local background
  
 -- "scene:create()"
 function scene:create( event )
@@ -46,16 +47,20 @@ function scene:show( event )
 			settings.music = true
 		end
 
+		background = display.newImageRect("Assets/Sprites/title_screen.png", display.contentWidth, display.contentWidth)
+		background.x = display.contentCenterX
+		background.y = display.contentCenterY - 80
+
    		play = MenuButton:new(o, 0, "GameScene", Graphic:new({},0,0,"playbutton"))
-   		play:SetPos(display.contentCenterX, display.contentCenterY - 30)
+   		play:SetPos(display.contentCenterX - 300, display.contentCenterY  + 250)
 		play:SetParams({settings = settings})
    
    		options = MenuButton:new(o, 0, "SettingsScene",Graphic:new({},0,0,"settingsbutton"))
-   		options:SetPos(display.contentCenterX, display.contentCenterY + 30)
+   		options:SetPos(display.contentCenterX, display.contentCenterY + 250)
 		options:SetParams({settings = settings})
 		
    		credits = MenuButton:new(o, 0, "CreditsScene",Graphic:new({},0,0,"creditbutton"))
-   		credits:SetPos(display.contentCenterX, display.contentCenterY + 90)
+   		credits:SetPos(display.contentCenterX + 300, display.contentCenterY + 250)
 		credits:SetParams({settings = settings})
 		
    elseif ( phase == "did" ) then

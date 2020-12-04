@@ -18,7 +18,7 @@ local Physics = require("physics")
 local Graphic = {}
 
 
-function Graphic:new (o, x, y, g)    --constructor
+function Graphic:new (o, x, y, g, p)    --constructor
 	o = o or {}
 	setmetatable(o, self)
 	self.__index = self
@@ -30,6 +30,7 @@ function Graphic:new (o, x, y, g)    --constructor
 	o.x = x
 	o.y = y
 	o.simulate = false
+	o.proj = p
 	
 	if(g == "grunt")then
 		o.simulate = true
@@ -49,6 +50,7 @@ function Graphic:new (o, x, y, g)    --constructor
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
 		Physics.addBody(sprite,"kinematic",{outline=graphics.newOutline(4,spriteSheet,1)})
+		sprite.tag = "enemy"
 		table.insert(o.sprites, sprite)
 	elseif(g == "drone")then
 		o.simulate = true
@@ -68,6 +70,7 @@ function Graphic:new (o, x, y, g)    --constructor
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
 		Physics.addBody(sprite,"kinematic",{outline=graphics.newOutline(4,spriteSheet,1)})
+		sprite.tag = "enemy"
 		table.insert(o.sprites, sprite)
 	elseif(g == "fastdrone")then
 		o.simulate = true
@@ -87,6 +90,7 @@ function Graphic:new (o, x, y, g)    --constructor
 		}
 		local alien3 = display.newSprite(alien3Sheet,alien3Sequence)
 		Physics.addBody(alien3,"kinematic",{outline=graphics.newOutline(4,alien3Sheet,1)})
+		alien3.tag = "enemy"
 		table.insert(o.sprites, alien3)
 	elseif(g == "smartdrone")then
 		o.simulate = true
@@ -106,6 +110,7 @@ function Graphic:new (o, x, y, g)    --constructor
 		}
 		local alien1 = display.newSprite(alien1Sheet,alien1Sequence)
 		Physics.addBody(alien1,"kinematic",{outline=graphics.newOutline(4,alien1Sheet,1)})
+		alien1.tag = "enemy"
 		table.insert(o.sprites, alien1)
 	elseif(g == "projectile")then
 		o.simulate = true
@@ -128,6 +133,7 @@ function Graphic:new (o, x, y, g)    --constructor
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
 		sprite:scale(2,2)
 		sprite.tag = "projectile"
+		sprite.parent = o
 		Physics.addBody(sprite,"dynamic",{radius=20})
 		table.insert(o.sprites, sprite)
 	elseif(g == "bomb")then

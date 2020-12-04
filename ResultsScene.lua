@@ -99,9 +99,9 @@ function scene:show( event )
 			if(filedata ~= nil and filedata.time ~= nil)then
 				--besttime = math.max(filedata.time, gameTime)
 				if(filedata.time > gameTime)then
-					besttime = gameTime
-				else
 					besttime = filedata.time
+				else
+					besttime = gameTime
 				end
 				--print(filedata.time)
 			else
