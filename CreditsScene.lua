@@ -18,17 +18,20 @@ local creditOptions
 local creditDisplay
 
 local backgrounds
+local distBackdrops
 
 local exiting
 local title
 
 local credittimer
+local yScale = display.contentHeight/750
+local xScale = display.contentWidth/1334
 
 function Update()
 	if(exiting == false)then
-		creditdisplay.y = creditdisplay.y - 2
+		creditdisplay.y = creditdisplay.y - (2*yScale)
 		credittimer = credittimer + 1
-		if(credittimer < 1200)then
+		if(credittimer < 1100)then
 			timer.performWithDelay(15, Update, 1)
 		else
 			exiting = true
@@ -37,7 +40,13 @@ function Update()
 		end
 		
 		for i=1,#backgrounds,1 do
-			backgrounds[i]:SetX(backgrounds[i]:GetX()-(2 * display.contentWidth / 1334))
+			backgrounds[i]:SetX(backgrounds[i]:GetX()-(1.8 * display.contentWidth / 1334))
+			if(backgrounds[i]:GetX() < -(600 * display.contentWidth / 1334))then
+				backgrounds[i]:SetX((4190 * display.contentWidth / 1334))
+			end
+		end
+		for i=1,#backgrounds,1 do
+			backgrounds[i]:SetX(backgrounds[i]:GetX()-(0.8 * display.contentWidth / 1334))
 			if(backgrounds[i]:GetX() < -(600 * display.contentWidth / 1334))then
 				backgrounds[i]:SetX((4190 * display.contentWidth / 1334))
 			end
@@ -68,36 +77,67 @@ function scene:show( event )
 		credittimer = 0
 		
 		backgrounds = {}
+		distBackdrops = {}
 		
 		if(settings:WhatLevel() == 1)then
-			table.insert(backgrounds, Graphic:new({},0,0,"game1"))
-			table.insert(backgrounds, Graphic:new({},0,0,"game1"))
-			table.insert(backgrounds, Graphic:new({},0,0,"game1"))
-			table.insert(backgrounds, Graphic:new({},0,0,"game1"))
-			table.insert(backgrounds, Graphic:new({},0,0,"game1"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game1t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game1t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game1t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game1t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game1t"))
+			
+			table.insert(backgrounds, Graphic:new({},0,0,"game1b"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game1b"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game1b"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game1b"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game1b"))
 		elseif(settings:WhatLevel() == 2)then
-			table.insert(backgrounds, Graphic:new({},0,0,"game2"))
-			table.insert(backgrounds, Graphic:new({},0,0,"game2"))
-			table.insert(backgrounds, Graphic:new({},0,0,"game2"))
-			table.insert(backgrounds, Graphic:new({},0,0,"game2"))
-			table.insert(backgrounds, Graphic:new({},0,0,"game2"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game2t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game2t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game2t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game2t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game2t"))
+			
+			table.insert(backgrounds, Graphic:new({},0,0,"game2b"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game2b"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game2b"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game2b"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game2b"))
 		else
-			table.insert(backgrounds, Graphic:new({},0,0,"game3"))
-			table.insert(backgrounds, Graphic:new({},0,0,"game3"))
-			table.insert(backgrounds, Graphic:new({},0,0,"game3"))
-			table.insert(backgrounds, Graphic:new({},0,0,"game3"))
-			table.insert(backgrounds, Graphic:new({},0,0,"game3"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game3t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game3t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game3t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game3t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game3t"))
+			
+			table.insert(backgrounds, Graphic:new({},0,0,"game3b"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game3b"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game3b"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game3b"))
+			table.insert(backgrounds, Graphic:new({},0,0,"game3b"))
 		end
 		backgrounds[1]:SetX(0)
-		backgrounds[1]:SetY(display.contentHeight - (600 * display.contentHeight / 750))
-		backgrounds[2]:SetX(1200*display.contentWidth/1334)
-		backgrounds[2]:SetY(display.contentHeight - (600 * display.contentHeight / 750))
-		backgrounds[3]:SetX(2399*display.contentWidth/1334)
-		backgrounds[3]:SetY(display.contentHeight - (600 * display.contentHeight / 750))
-		backgrounds[4]:SetX(3598*display.contentWidth/1334)
-		backgrounds[4]:SetY(display.contentHeight - (600 * display.contentHeight / 750))
-		backgrounds[5]:SetX(4797*display.contentWidth/1334)
-		backgrounds[5]:SetY(display.contentHeight - (600 * display.contentHeight / 750))
+		backgrounds[1]:SetY(display.contentHeight - (80*yScale))
+		backgrounds[2]:SetX(1200*xScale)
+		backgrounds[2]:SetY(display.contentHeight - (80*yScale))
+		backgrounds[3]:SetX(2399*xScale)
+		backgrounds[3]:SetY(display.contentHeight - (80*yScale))
+		backgrounds[4]:SetX(3598*xScale)
+		backgrounds[4]:SetY(display.contentHeight - (80*yScale))
+		backgrounds[5]:SetX(4797*xScale)
+		backgrounds[5]:SetY(display.contentHeight - (80*yScale))
+		
+		
+		distBackdrops[1]:SetX(0)
+		distBackdrops[1]:SetY(display.contentHeight - (650*yScale))
+		distBackdrops[2]:SetX(1200*xScale)
+		distBackdrops[2]:SetY(display.contentHeight - (650*yScale))
+		distBackdrops[3]:SetX(2399*xScale)
+		distBackdrops[3]:SetY(display.contentHeight - (650*yScale))
+		distBackdrops[4]:SetX(3598*xScale)
+		distBackdrops[4]:SetY(display.contentHeight - (650*yScale))
+		distBackdrops[5]:SetX(4797*xScale)
+		distBackdrops[5]:SetY(display.contentHeight - (650*yScale))
 
    		title = MenuButton:new(o, 0, "TitleScene", Graphic:new({},0,0,"backbutton"))
    		title:SetPos(display.contentCenterX/(3*display.contentWidth/1334), display.contentCenterY + (190 * display.contentHeight / 750))
@@ -111,7 +151,7 @@ function scene:show( event )
 		creditdisplay = display.newText({
 			text=credittext,
 			x=display.contentCenterX,
-			y=(display.contentHeight*5/3)*display.contentWidth/1334,
+			y=(display.contentHeight*5/3),
 			width = (display.contentWidth*2/3)*display.contentWidth/1334,
 			align = "center"
 		})
@@ -140,6 +180,11 @@ function scene:hide( event )
 		for i=1,#backgrounds,1 do
 			local j = backgrounds[#backgrounds]
 			table.remove(backgrounds, #backgrounds)
+			j:Destroy()
+		end
+		for i=1,#distBackdrops,1 do
+			local j = distBackdrops[#distBackdrops]
+			table.remove(distBackdrops, #distBackdrops)
 			j:Destroy()
 		end
    

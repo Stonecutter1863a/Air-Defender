@@ -100,6 +100,7 @@ function scene:hide( event )
 		options:Destroy()
 		options=nil
 	end
+	background:Destroy()
 	if(credits~=nil)then
 		credits:Destroy()
 		credits=nil

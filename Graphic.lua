@@ -29,6 +29,8 @@ function Graphic:new (o, x, y, g, p)    --constructor
 	o.angle = 0
 	o.x = x
 	o.y = y
+	o:SetX(x)
+	o:SetY(y)
 	o.simulate = false
 	o.proj = p
 	
@@ -50,9 +52,10 @@ function Graphic:new (o, x, y, g, p)    --constructor
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
 		--Physics.addBody(sprite,"dynamic",{outline=graphics.newOutline(4,spriteSheet,1)})
-		Physics.addBody(sprite,"kinematic",{radius = 50})
-		--sprite.isSensor = true
+		Physics.addBody(sprite,"kinematic")
+		sprite.isSensor = true
 		sprite.tag = "enemy"
+		sprite.gravityScale = 0
 		sprite:scale(display.contentWidth/1334,display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "drone")then
@@ -73,9 +76,10 @@ function Graphic:new (o, x, y, g, p)    --constructor
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
 		--Physics.addBody(sprite,"dynamic",{outline=graphics.newOutline(4,spriteSheet,1)})
-		Physics.addBody(sprite,"kinematic",{radius = 50})
-		--sprite.isSensor = true
+		Physics.addBody(sprite,"kinematic")
+		sprite.isSensor = true
 		sprite.tag = "enemy"
+		sprite.gravityScale = 0
 		sprite:scale(display.contentWidth/1334,display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "fastdrone")then
@@ -96,9 +100,10 @@ function Graphic:new (o, x, y, g, p)    --constructor
 		}
 		local alien3 = display.newSprite(alien3Sheet,alien3Sequence)
 		--Physics.addBody(alien3,"dynamic",{outline=graphics.newOutline(4,alien3Sheet,1)})
-		Physics.addBody(alien3,"kinematic",{radius = 50})
+		Physics.addBody(alien3,"kinematic")
 		alien3.tag = "enemy"
-		--alien3.isSensor = true
+		alien3.isSensor = true
+		alien3.gravityScale = 0
 		alien3:scale(display.contentWidth/1334,display.contentHeight/750)
 		table.insert(o.sprites, alien3)
 	elseif(g == "smartdrone")then
@@ -119,9 +124,10 @@ function Graphic:new (o, x, y, g, p)    --constructor
 		}
 		local alien1 = display.newSprite(alien1Sheet,alien1Sequence)
 		--Physics.addBody(alien1,"dynamic",{outline=graphics.newOutline(4,alien1Sheet,1)})
-		Physics.addBody(alien1,"kinematic",{radius = 50})
+		Physics.addBody(alien1,"kinematic")
 		alien1.tag = "enemy"
-		--alien1.isSensor = true
+		alien1.gravityScale = 0
+		alien1.isSensor = true
 		alien1:scale(display.contentWidth/1334,display.contentHeight/750)
 		table.insert(o.sprites, alien1)
 	elseif(g == "projectile")then
@@ -138,17 +144,82 @@ function Graphic:new (o, x, y, g, p)    --constructor
 		local spriteSequence = {
 			name = "projectile",
 			start = 1,
-			count = 1,
-			time = 15,
-			loopCount = 1
+			count = 2,
+			time = 15*15,
+			loopCount = 0
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
 		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
 		sprite.tag = "projectile"
 		sprite.parent = o
-		Physics.addBody(sprite,"dynamic",{radius = 20})
+		Physics.addBody(sprite,"dynamic")
+		sprite.isSensor = true
+		sprite.isBullet = true
+		sprite.gravityScale = 0
+		sprite:play()
 		table.insert(o.sprites, sprite)
 	elseif(g == "bomb")then
+		o.simulate = true
+		o.width = 8*2
+		o.height = 4*2
+		local spriteoptions = {
+			frames = {
+				{x = 54, y = 36, width = 28, height = 12},
+				{x = 40, y = 36, width = 12, height = 28}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/bomb.png", spriteoptions)
+		local spriteSequence = {
+			name = "bomb",
+			start = 1,
+			count = 2,
+			loopCount = 1
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(1*display.contentWidth/1334,1*display.contentHeight/750)
+		--sprite.tag = "projectile"
+		sprite.parent = o
+		Physics.addBody(sprite,"dynamic")
+		sprite.gravityScale = 8*display.contentHeight/750
+		sprite.isSensor = true
+		sprite.isBullet = true
+		sprite.tag = "projectile"
+		--sprite:play()
+		table.insert(o.sprites, sprite)
+	elseif(g == "explosion")then
+		o.simulate = true
+		o.width = 8*2
+		o.height = 4*2
+		local spriteoptions = {
+			frames = {
+				{x = 20, y = 32, width = 28, height = 4},
+				{x = 72, y = 24, width = 28, height = 12},
+				{x = 8, y = 64, width = 32, height = 32},
+				{x = 8, y = 64, width = 32, height = 32},
+				{x = 72, y = 24, width = 28, height = 12},
+				{x = 20, y = 32, width = 28, height = 4},
+				{x = 72, y = 64, width = 32, height = 30},
+				{x = 72, y = 64, width = 32, height = 30}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/explosion.png", spriteoptions)
+		local spriteSequence = {
+			name = "explosion",
+			start = 1,
+			count = 8,
+			time = 180*15,
+			loopCount = 1
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(3*display.contentWidth/1334,3*display.contentHeight/750)
+		sprite.tag = "projectile"
+		sprite.parent = o
+		Physics.addBody(sprite,"dynamic",{shape = 0,0, 100*display.contentWidth/1334,0, 100*display.contentWidth/1334,120*display.contentHeight/750, 0,120*display.contentHeight/750})
+		sprite:play()
+		sprite.gravityScale = 0.2*display.contentHeight/750
+		sprite.isSensor = true
+		sprite.isBullet = true
+		table.insert(o.sprites, sprite)
 	elseif(g == "avatar")then
 		o.width = 96
 		o.height = 40
@@ -166,8 +237,9 @@ function Graphic:new (o, x, y, g, p)    --constructor
 		}
 		local sprite = display.newSprite(spriteSheet,spriteSequence)
 		--Physics.addBody(sprite,"dynamic",{outline=graphics.newOutline(4,spriteSheet,1)})
-		Physics.addBody(sprite,"dynamic",{radius=50})
+		Physics.addBody(sprite,"dynamic")
 		sprite.isSensor = true
+		sprite.gravityScale = 0
 		sprite:scale(display.contentWidth/1334,display.contentHeight/750)
 		table.insert(o.sprites, sprite)
 	elseif(g == "title")then
@@ -237,6 +309,114 @@ function Graphic:new (o, x, y, g, p)    --constructor
 		local spriteSheet = graphics.newImageSheet("Assets/Sprites/backdrop_desert.png", spriteoptions)
 		local spriteSequence = {
 			name = "desert",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(0.8*display.contentWidth/1334,0.8*display.contentHeight/750)
+		table.insert(o.sprites, sprite)
+	elseif(g == "game3t")then
+		o.width = 1500
+		o.height = 195
+		local spriteoptions = {
+			frames = {
+				{x = 0, y = 0, width = 1500, height = 1305}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/backdrop_deserttop.png", spriteoptions)
+		local spriteSequence = {
+			name = "deserttop",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(0.8*display.contentWidth/1334,0.8*display.contentHeight/750)
+		table.insert(o.sprites, sprite)
+	elseif(g == "game3b")then
+		o.width = 1500
+		o.height = 195
+		local spriteoptions = {
+			frames = {
+				{x = 0, y = 0, width = 1500, height = 195}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/backdrop_desertbottom.png", spriteoptions)
+		local spriteSequence = {
+			name = "desertbottom",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(0.8*display.contentWidth/1334,0.8*display.contentHeight/750)
+		table.insert(o.sprites, sprite)
+	elseif(g == "game1t")then
+		o.width = 1500
+		o.height = 195
+		local spriteoptions = {
+			frames = {
+				{x = 0, y = 0, width = 1500, height = 1305}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/backdrop_citytop.png", spriteoptions)
+		local spriteSequence = {
+			name = "citytop",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(0.8*display.contentWidth/1334,0.8*display.contentHeight/750)
+		table.insert(o.sprites, sprite)
+	elseif(g == "game1b")then
+		o.width = 1500
+		o.height = 195
+		local spriteoptions = {
+			frames = {
+				{x = 0, y = 0, width = 1500, height = 195}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/backdrop_citybottom.png", spriteoptions)
+		local spriteSequence = {
+			name = "citybottom",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(0.8*display.contentWidth/1334,0.8*display.contentHeight/750)
+		table.insert(o.sprites, sprite)
+	elseif(g == "game2t")then
+		o.width = 1500
+		o.height = 195
+		local spriteoptions = {
+			frames = {
+				{x = 0, y = 0, width = 1500, height = 1305}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/backdrop_mountainstop.png", spriteoptions)
+		local spriteSequence = {
+			name = "mountainstop",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(0.8*display.contentWidth/1334,0.8*display.contentHeight/750)
+		table.insert(o.sprites, sprite)
+	elseif(g == "game2b")then
+		o.width = 1500
+		o.height = 195
+		local spriteoptions = {
+			frames = {
+				{x = 0, y = 0, width = 1500, height = 195}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/backdrop_mountainsbottom.png", spriteoptions)
+		local spriteSequence = {
+			name = "mountainsbottom",
 			start = 1,
 			count = 1,
 			loopCount = 0
@@ -346,6 +526,24 @@ function Graphic:new (o, x, y, g, p)    --constructor
 		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
 		local spriteSequence = {
 			name = "fire",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
+		table.insert(o.sprites, sprite)
+	elseif(g == "bombbutton")then
+		o.width = 46*2
+		o.height = 20*2
+		local spriteoptions = {
+			frames = {
+				{x = 50, y = 158, width = 46, height = 22}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
+		local spriteSequence = {
+			name = "bombbutton",
 			start = 1,
 			count = 1,
 			loopCount = 0

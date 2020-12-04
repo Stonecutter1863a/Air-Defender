@@ -57,6 +57,10 @@ function scene:show( event )
 
 	local Settings = Settings
 
+		background = Graphic:new({},0,0,"title")
+		background:SetX(display.contentWidth/2)
+		background:SetY(display.contentHeight/2 - (80 * display.contentHeight/750))
+		
    		title = MenuButton:new(o, 0, "TitleScene", Graphic:new({},0,0,"backbutton"),self)
    		title:SetPos(display.contentCenterX + (400*display.contentWidth/1334), display.contentCenterY + (250*display.contentHeight/750))
 		
@@ -108,6 +112,7 @@ function scene:hide( event )
 	sfxsetting=nil
 	levelsetting:Destroy()
 	levelsetting=nil
+	background:Destroy()
  
    end
 end

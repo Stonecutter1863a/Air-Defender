@@ -15,8 +15,8 @@ local framerateControl = 15
 local exiting = false
 local paused
 
-local groundenemyspeed = 50*2.2 * display.contentWidth / 1334
-local airenemyspeed = 50*3 * display.contentWidth / 1334
+local groundenemyspeed = 2.2 * display.contentWidth / 1334
+local airenemyspeed = 3 * display.contentWidth / 1334
 
 local xScale = display.contentWidth / 1334
 local yScale = display.contentHeight / 750
@@ -30,6 +30,7 @@ local MenuButton = require("MenuButton")
 local AI = require("AI")
 local Combatant = require("Combatant")
 local Graphic = require("Graphic")
+	local Weapon = require("Weapon")
 
 local steering
 local fire
@@ -46,6 +47,7 @@ local difficulty
 local health
 
 local backdrops
+local distBackdrops
 
 local enemyspawncenter
 local enemyspawnnumber
@@ -193,16 +195,24 @@ function UpdateGame()
 			timerActual.text = timerActual.text .. (math.floor(gameTime % 3600/60))
 		end
 		
-		--timerActual.text = timerDefualtText .. (math.floor(gameTime / 7200)) .. ":" .. (math.floor(gameTime % 3600/60))
 		scoreActual.text = scoreDefualtText .. (score)
 		healthActual.text = healthDefualtText .. (health)
 		playerAvatar:Steer(steering:GetInput())
 		playerAvatar:Update()
 		
 		if(fire:IsPressed() == true)then
-			local projectile = playerAvatar:UseWeapon()
-			if(settings:IsSFX() == true)then
+			local projectile = playerAvatar:UseWeapon(1)
+			if(projectile ~= nil and settings:IsSFX() == true)then
 				audio.play(sounds.fire, {channel = 2, loops = 0})
+			end
+			if not (projectile == nil) then
+				table.insert(projectiles, projectile)
+			end
+		end
+		if(bomb:IsPressed() == true)then
+			local projectile = playerAvatar:UseWeapon(2)
+			if(projectile ~= nil and settings:IsSFX() == true)then
+				audio.play(sounds.explosion, {channel = 2, loops = 0})
 			end
 			if not (projectile == nil) then
 				table.insert(projectiles, projectile)
@@ -211,14 +221,21 @@ function UpdateGame()
 		
 		for i, j in ipairs(projectiles) do
 			j:Update()
-			if(
-				j:GetPosX() > display.contentWidth
-				or j:GetPosX() < 0
-				or j:GetPosY() > display.contentHeight
-				or j:GetPosY() < 0
+			if(j.explosion~=nil)then
+				print("Exploded!")
+				projectiles[i] = j.explosion
+				j:Destroy()
+			elseif(j.isBomb ~= nil and j.GetPosY()~= nil and j.GetPosY() > display.contentHeight*9/10)then
+				j:Explode()
+			elseif(j.graphics ~= nil
+					and
+					(j:GetPosX() > display.contentWidth
+					or j:GetPosX() < 0
+					or j:GetPosY() > display.contentHeight
+					or j:GetPosY() < 0)
 			)then
 				table.remove(projectiles, i)
-				j:Delete()
+				j:Destroy()
 			--[[else
 				for k,l in ipairs(enemies)do
 					if(
@@ -254,7 +271,6 @@ function UpdateGame()
 				end
 				j:Update()
 				if(j.graphic.sprites[1].collided == true)then
-					--print("detected collision")
 					if (j:Damage(1) == true)then
 						j:Delete()
 						table.remove(enemies, i)
@@ -311,6 +327,22 @@ function UpdateGame()
 		elseif(backdrops[5]:GetX() < -(600*xScale))then
 			backdrops[5]:SetX(4190*xScale)
 		end
+		distBackdrops[1]:SetX(distBackdrops[1]:GetX()-(backspeed))
+		distBackdrops[2]:SetX(distBackdrops[2]:GetX()-(backspeed))
+		distBackdrops[3]:SetX(distBackdrops[3]:GetX()-(backspeed))
+		distBackdrops[4]:SetX(distBackdrops[4]:GetX()-(backspeed))
+		distBackdrops[5]:SetX(distBackdrops[5]:GetX()-(backspeed))
+		if(distBackdrops[1]:GetX() < -(600*xScale))then
+			distBackdrops[1]:SetX(4190*xScale)
+		elseif(distBackdrops[2]:GetX() < -(600*xScale))then
+			distBackdrops[2]:SetX(4190*xScale)
+		elseif(distBackdrops[3]:GetX() < -(600*xScale))then
+			distBackdrops[3]:SetX(4190*xScale)
+		elseif(distBackdrops[4]:GetX() < -(600*xScale))then
+			distBackdrops[4]:SetX(4190*xScale)
+		elseif(distBackdrops[5]:GetX() < -(600*xScale))then
+			distBackdrops[5]:SetX(4190*xScale)
+		end
 	else
 		audio.pause(1)
 	end
@@ -321,6 +353,11 @@ end
 
 function scene:Unpause()
 		pause:Unpause()
+		Physics.start()
+end
+
+function scene:Pause()
+	Physics.pause()
 end
 
 --[[function SetDifficulty()
@@ -362,39 +399,73 @@ function scene:show( event )
 		settings = event.params.settings
 		
 		Physics.start()
-		Physics.setGravity(0,0)
+		--Physics.setGravity(0,0)
 		
 		audio.stop()
 		backdrops = {}
+		distBackdrops = {}
 		if(settings:WhatLevel() == 1)then
-			table.insert(backdrops, Graphic:new({},0,0,"game1"))
-			table.insert(backdrops, Graphic:new({},0,0,"game1"))
-			table.insert(backdrops, Graphic:new({},0,0,"game1"))
-			table.insert(backdrops, Graphic:new({},0,0,"game1"))
-			table.insert(backdrops, Graphic:new({},0,0,"game1"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game1t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game1t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game1t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game1t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game1t"))
+			
+			table.insert(backdrops, Graphic:new({},0,0,"game1b"))
+			table.insert(backdrops, Graphic:new({},0,0,"game1b"))
+			table.insert(backdrops, Graphic:new({},0,0,"game1b"))
+			table.insert(backdrops, Graphic:new({},0,0,"game1b"))
+			table.insert(backdrops, Graphic:new({},0,0,"game1b"))
 		elseif(settings:WhatLevel() == 2)then
-			table.insert(backdrops, Graphic:new({},0,0,"game2"))
-			table.insert(backdrops, Graphic:new({},0,0,"game2"))
-			table.insert(backdrops, Graphic:new({},0,0,"game2"))
-			table.insert(backdrops, Graphic:new({},0,0,"game2"))
-			table.insert(backdrops, Graphic:new({},0,0,"game2"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game2t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game2t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game2t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game2t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game2t"))
+			
+			table.insert(backdrops, Graphic:new({},0,0,"game2b"))
+			table.insert(backdrops, Graphic:new({},0,0,"game2b"))
+			table.insert(backdrops, Graphic:new({},0,0,"game2b"))
+			table.insert(backdrops, Graphic:new({},0,0,"game2b"))
+			table.insert(backdrops, Graphic:new({},0,0,"game2b"))
 		else
-			table.insert(backdrops, Graphic:new({},0,0,"game3"))
-			table.insert(backdrops, Graphic:new({},0,0,"game3"))
-			table.insert(backdrops, Graphic:new({},0,0,"game3"))
-			table.insert(backdrops, Graphic:new({},0,0,"game3"))
-			table.insert(backdrops, Graphic:new({},0,0,"game3"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game3t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game3t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game3t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game3t"))
+			table.insert(distBackdrops, Graphic:new({},0,0,"game3t"))
+			
+			table.insert(backdrops, Graphic:new({},0,0,"game3b"))
+			table.insert(backdrops, Graphic:new({},0,0,"game3b"))
+			table.insert(backdrops, Graphic:new({},0,0,"game3b"))
+			table.insert(backdrops, Graphic:new({},0,0,"game3b"))
+			table.insert(backdrops, Graphic:new({},0,0,"game3b"))
 		end
 		backdrops[1]:SetX(0)
-		backdrops[1]:SetY(display.contentHeight - (600*yScale))
+		backdrops[1]:SetY(display.contentHeight - (80*yScale))
 		backdrops[2]:SetX(1200*xScale)
-		backdrops[2]:SetY(display.contentHeight - (600*yScale))
+		backdrops[2]:SetY(display.contentHeight - (80*yScale))
 		backdrops[3]:SetX(2399*xScale)
-		backdrops[3]:SetY(display.contentHeight - (600*yScale))
+		backdrops[3]:SetY(display.contentHeight - (80*yScale))
 		backdrops[4]:SetX(3598*xScale)
-		backdrops[4]:SetY(display.contentHeight - (600*yScale))
+		backdrops[4]:SetY(display.contentHeight - (80*yScale))
 		backdrops[5]:SetX(4797*xScale)
-		backdrops[5]:SetY(display.contentHeight - (600*yScale))
+		backdrops[5]:SetY(display.contentHeight - (80*yScale))
+		
+		
+		distBackdrops[1]:SetX(0)
+		distBackdrops[1]:SetY(display.contentHeight - (650*yScale))
+		distBackdrops[2]:SetX(1200*xScale)
+		distBackdrops[2]:SetY(display.contentHeight - (650*yScale))
+		distBackdrops[3]:SetX(2399*xScale)
+		distBackdrops[3]:SetY(display.contentHeight - (650*yScale))
+		distBackdrops[4]:SetX(3598*xScale)
+		distBackdrops[4]:SetY(display.contentHeight - (650*yScale))
+		distBackdrops[5]:SetX(4797*xScale)
+		distBackdrops[5]:SetY(display.contentHeight - (650*yScale))
+		
+		
+		
 		
 	enemies = {}
 	ai = {}
@@ -405,16 +476,18 @@ function scene:show( event )
 	steering.interface.y = (display.contentHeight - (steering.interface.height))/(2)
 	
 	local g = Graphic:new({},0,0,"avatar")
-	playerAvatar = Combatant:new({},3,true,0,750*display.contentHeight/(750),1,g)
+	playerAvatar = Combatant:new({},3,true,{Weapon:new({}, "l","projectile"),Weapon:new({}, "b","bomb")},15*display.contentHeight/(750),1,g)
 	playerAvatar:SetPos(display.contentWidth/(6), display.contentHeight/(2))
 	
 	pause = MenuButton:new({}, 1, "PauseScene", Graphic:new({},0,0,"pausebutton"))
-	pause:SetPos((display.contentWidth/(18)), (display.contentHeight*((3/5))) - (pause.interface:GetHeight()/(2)) - (display.contentHeight/(9)))
+	pause:SetPos((display.contentWidth/(16)), (display.contentHeight*((6/10))) - (pause.interface:GetHeight()/(2)) - (display.contentHeight/(9)))
 	
-	--local h = Graphic:new({},0,0,"firebutton")
-	fire = FireButton:new({})
-	--fire:SetPos(fire.interface:GetWidth(), (display.contentHeight*2/5) - (fire.interface:GetHeight()/2))
-	fire:SetPos((display.contentWidth/(18)), (display.contentHeight*((2/5))) - (fire.interface:GetHeight()/(2)) - (display.contentHeight/(9)))
+	fire = FireButton:new({},Graphic:new({},0,0,"firebutton"))
+	fire:SetPos((display.contentWidth/(16)), (display.contentHeight*((4/10))) - (fire.interface:GetHeight()/(2)) - (display.contentHeight/(9)))
+	
+	bomb = FireButton:new({}, Graphic:new({},0,0,"bombbutton"))
+	bomb:SetPos((display.contentWidth/(16)), (display.contentHeight*((5/10))) - (fire.interface:GetHeight()/(2)) - (display.contentHeight/(9)))
+	
 	
 	exiting = false
 	paused = false
@@ -460,7 +533,7 @@ function scene:show( event )
 	timerDefault =
 	{
 		text = timerDefualtText,
-		x = 110*xScale,
+		x = 90*xScale,
 		y = 84*yScale,
 		fontSize = 24*xScale,
 		width = 200*xScale,
@@ -472,7 +545,7 @@ function scene:show( event )
 	scoreDefault =
 	{
 		text = scoreDefualtText,
-		x = 110*xScale,
+		x = 90*xScale,
 		y = 56*yScale,
 		width = 200*xScale,
 		fontSize = 24*xScale,
@@ -484,7 +557,7 @@ function scene:show( event )
 	healthDefault =
 	{
 		text = healthDefualtText,
-		x = 110*xScale,
+		x = 90*xScale,
 		y = 112*yScale,
 		width = 200*xScale,
 		fontSize = 24*xScale,
@@ -516,6 +589,7 @@ function scene:hide( event )
    elseif ( phase == "did" ) then
 	timer.cancel("UpdateGame")
 		fire:Destroy()
+		bomb:Destroy()
 		pause:Destroy()
 		for i=1,#enemies,1 do
 			local j = enemies[#enemies]
@@ -530,11 +604,16 @@ function scene:hide( event )
 		for i=1,#projectiles,1 do
 			local j = projectiles[#projectiles]
 			table.remove(projectiles, #projectiles)
-			j:Delete()
+			j:Destroy()
 		end
 		for i=1,#backdrops,1 do
 			local j = backdrops[#backdrops]
 			table.remove(backdrops, #backdrops)
+			j:Destroy()
+		end
+		for i=1,#distBackdrops,1 do
+			local j = distBackdrops[#distBackdrops]
+			table.remove(distBackdrops, #distBackdrops)
 			j:Destroy()
 		end
 		if(playerAvatar ~= nil and playerAvatar.Delete ~= nil)then

@@ -27,46 +27,49 @@ function Projectile:new(o,x,y,dy,dx,sfx,s,g)	--## needs to play sfx
 	o.aimY = dy
 	o.aimX = dx
 	
-	local Graphic = require("Graphic")
-	
-	o.graphic = Graphic:new({},x,y,"projectile", o)
+	o.graphic = g
 	o.sfx = sfx
 	o.topspeed = s
 	o.graphic:SetY(y)
 	o.graphic:SetX(x)
 	
 
-	function o.Reset()
+	--[[function o.Reset()
 		o.graphic.sprites[1]:setLinearVelocity(0,0)
 		o.graphic.sprites[1]:applyForce((dx * s*display.contentWidth/1334),(dy * s*display.contentHeight/750),o.graphic:GetX(),o.graphic:GetY())
-	end
+	end]]
 	
 	function o.collide(event)
 		--if(event.phase == "end")then
 			--timer.performWithDelay(30,o.Reset,1)
 		--end
-		if(o.graphic.sprites[1]:getAngularVelocity() < 1)then
-			o.graphic.sprites[1]:applyAngularImpulse(300)
+		if(--[[o.graphic.sprites[1]:getAngularVelocity() < 1 and]] event.other.tag == "enemy")then
+			o.graphic.sprites[1]:applyAngularImpulse(1)
 		end
 	end
-	
 	o.graphic.sprites[1]:applyForce((dx * s*display.contentWidth/1334),(dy * s*display.contentHeight/750), x,y)
 	
-	o.graphic:addEventListener("collide", o.collide)
+	o.graphic:addEventListener("collision", o.collide)
+	--timer.performWithDelay(2, o.regAncestry)
 	return o
 end
+
 
 function Projectile:Update()
 		--self.graphic:SetY(self.graphic:GetY() - (self.aimY * self.topspeed*display.contentHeight/750))
 		--self.graphic:SetX(self.graphic:GetX() + (self.aimX * self.topspeed*display.contentWidth/1334))
-		self:Reset()
+		--self:Reset()
 end
 
 function Projectile:GetPosX()
 	return self.graphic:GetX()
 end
 function Projectile:GetPosY()
-	return self.graphic:GetY()
+	if(self ~= nil)then
+		return self.graphic:GetY()
+	else
+		return nil
+	end
 end
 
 function Projectile:Reset()
@@ -76,7 +79,7 @@ function Projectile:Reset()
 	--self:applyForce((self.aimX * self.topspeed*display.contentWidth/1334),(self.aimY * self.topspeed*display.contentHeight/750),self.graphic:GetX(),self.graphic:GetY())
 end
 
-function Projectile:Delete()
+function Projectile:Destroy()
 	self.graphic:Destroy()
 	
 		for i=1,#self,1 do

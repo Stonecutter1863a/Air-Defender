@@ -32,13 +32,12 @@ function Combatant:new(o,h,p,w,t,a,g)
 	setmetatable(o, self)
 	self.__index = self
 	
-	local Weapon = require("Weapon")
 	
 	o.health = h
 	o.aimY = 0
 	o.aimX = 1
 	o.isPlayer = p
-	o.weapon = Weapon:new({}, "w")	--##
+	o.weapons = w
 	o.topspeed = t
 	o.speed = 0
 	o.acceleration = a
@@ -97,18 +96,20 @@ function Combatant:Update()
 	--self.graphic.sprites[1]:applyForce((self.aimX * self.topspeed),(self.aimY * self.topspeed),self.graphic:GetX(),self.graphic:GetY())
 	if(self.isPlayer == true) then
 		--self.graphic:SetY(self.graphic:GetY() - (self.aimY * self.topspeed))
-		self.graphic.sprites[1]:setLinearVelocity(0,-(self.aimY * self.topspeed))
+		self.graphic.sprites[1]:setLinearVelocity(0,-((self.aimY * 50*self.topspeed)))
 		if(self.graphic:GetY() > display.contentHeight) then
 			self.graphic:SetY(display.contentHeight)
 		elseif(self.graphic:GetY() < 0) then
 			self.graphic:SetY(0)
 		end
 		--self.graphic:SetX(display.contentWidth/6)
-		self.weapon:Update()
+		for i=1,#self.weapons,1 do
+			self.weapons[i]:Update()
+		end
 	else
 	--self.graphic.sprites[1]:applyForce(-(self.aimX * self.topspeed*display.contentWidth/1334),-(self.aimY * self.topspeed*display.contentHeight/750),self.graphic:GetX(),self.graphic:GetY())
 		--self.graphic:SetY(self.graphic:GetY() - (self.aimY * self.topspeed))
-		self.graphic.sprites[1]:setLinearVelocity(-(self.aimX * self.topspeed),-(self.aimY * self.topspeed))
+		self.graphic.sprites[1]:setLinearVelocity(-((self.aimX * 50*self.topspeed)),-(self.aimY * 50*self.topspeed))
 		if(self.graphic:GetY() > display.contentHeight - 96) then
 			self.graphic:SetY(display.contentHeight - 96)
 		elseif(self.graphic:GetY() < 96) then
@@ -118,8 +119,8 @@ function Combatant:Update()
 	end
 end
 
-function Combatant:UseWeapon()
-	return self.weapon:FireProjectile(self.graphic:GetX(),self.graphic:GetY(),0,1,self.isPlayer)
+function Combatant:UseWeapon(num)
+	return self.weapons[num]:FireProjectile(self.graphic:GetX(),self.graphic:GetY(),0,1,self.isPlayer)
 end
 
 function Combatant:Damage(amount)

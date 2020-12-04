@@ -51,29 +51,8 @@ function FireButton:new (o, g)    --constructor
 	self.__index = self
 	
 	
-	--local g = display.newRect(0, 0, 100, 100)
-	--g:setFillColor(1,1,1)
-	
-	--o.interface = g
-	
-		local spriteoptions = {
-			frames = {
-				{x = 2, y = 158, width = 46, height = 20}
-			}
-		}
-		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
-		local spriteSequence = {
-			name = "fire",
-			start = 1,
-			count = 1,
-			loopCount = 0
-		}
-		--local sprite = display.newSprite(spriteSheet,spriteSequence)
-		--sprite:scale(1.5,1.5)
 		
-		local sprite = Graphic:new({},0,0,"firebutton")
-		
-	o.interface = sprite
+	o.interface = g
 	--o.interface.height = 30
 	--o.interface.width = 69
 	o.interface.sprites[1].isPressed = false

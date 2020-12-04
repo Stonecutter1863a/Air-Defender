@@ -37,7 +37,7 @@ function scene:show( event )
    		title = MenuButton:new(o, 0, "TitleScene",Graphic:new({},0,0,"quitbutton"))
    		title:SetPos(display.contentCenterX, display.contentCenterY + (30*display.contentHeight/750))
 		
-		--event.parent:Pause()
+		event.parent:Pause()
 		
    elseif ( phase == "did" ) then
    

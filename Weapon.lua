@@ -6,6 +6,8 @@
 ]]
 
 		local Projectile = require("Projectile")
+		local Bomb = require("Bomb")
+		local Graphic = require("Graphic")
 		local Physics
 
 --[[
@@ -16,15 +18,21 @@
 ]]
 local Weapon = {}
 
-function Weapon:new (o, weapontype)    --constructor
+function Weapon:new (o, weapontype, g)    --constructor
 	o = o or {}
 	setmetatable(o, self)
 	self.__index = self
 	
-	o.speed = 30
-	o.graphic = "graphic"
+	o.weapontype = weapontype
+	o.graphic = g
 	o.sfx = "sfx"
-	o.endlag = 15
+	if(weapontype == "l") then
+		o.endlag = 15
+		o.speed = 30
+	else
+		o.endlag = 60
+		o.speed = 2
+	end
 	o.lagtime = 0
 	
 	return o
@@ -41,7 +49,12 @@ end
 
 function Weapon:FireProjectile(x,y,directionX,directionY)
 	if(self.lagtime == 0)then
-		local projectile = Projectile:new(o, x, y, directionX,directionY, self.sfx, self.speed, self.graphic)
+		local projectile
+		if(self.weapontype == "l" or self.weapontype == nil)then
+			projectile = Projectile:new(o, x, y, directionX,directionY, self.sfx, self.speed, Graphic:new({},x,y,self.graphic))
+		else
+			projectile = Bomb:new(o, x, y, directionX,directionY, self.sfx, self.speed, Graphic:new({},x,y,self.graphic))
+		end
 		self.lagtime = self.endlag
 		--print("fired projectile")
 		return projectile
