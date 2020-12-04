@@ -387,7 +387,7 @@ function scene:Unpause()
 		end
 		for i=1,#projectiles,1 do
 			local j = projectiles[#projectiles]
-			j.graphics.sprites[1]:play()
+			if(j.graphic ~= nil)then j.graphic.sprites[1]:play() end
 		end
 end
 
@@ -404,7 +404,7 @@ function scene:Pause()
 		for i=1,#projectiles,1 do
 		print("projectile paused")
 			local j = projectiles[#projectiles+1-i]
-			j.graphics.sprites[1]:pause()
+			if(j.graphic ~= nil)then j.graphic.sprites[1]:pause() end
 		end
 end
 
@@ -523,8 +523,14 @@ function scene:show( event )
 	steering = SteeringSlider:new()
 	steering.interface.x = display.contentWidth - (steering.interface.width * (2))
 	steering.interface.y = (display.contentHeight - (steering.interface.height))/(2)
-	
-	local g = Graphic:new({},0,0,"avatar")
+	local g
+	if(settings:WhatShip() == 1)then
+		g = Graphic:new({},0,0,"avatar")
+	elseif(settings:WhatShip() == 2)then
+		g = Graphic:new({},0,0,"avatar2")
+	else
+		g = Graphic:new({},0,0,"avatar3")
+	end
 	playerAvatar = Combatant:new({},3,true,{Weapon:new({}, "l","projectile"),Weapon:new({}, "b","bomb")},15*display.contentHeight/(750),1,g)
 	playerAvatar:SetPos(display.contentWidth/(6), display.contentHeight/(2))
 	

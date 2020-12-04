@@ -242,6 +242,50 @@ function Graphic:new (o, x, y, g, p)    --constructor
 		sprite.gravityScale = 0
 		sprite:scale(display.contentWidth/1334,display.contentHeight/750)
 		table.insert(o.sprites, sprite)
+	elseif(g == "avatar2")then
+		o.width = 96
+		o.height = 40
+		local spriteoptions = {
+			frames = {
+				{x = 4, y = 24, width = 88, height = 48}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/friendly2.png", spriteoptions)
+		local spriteSequence = {
+			name = "avatar2",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		--Physics.addBody(sprite,"dynamic",{outline=graphics.newOutline(4,spriteSheet,1)})
+		Physics.addBody(sprite,"dynamic")
+		sprite.isSensor = true
+		sprite.gravityScale = 0
+		sprite:scale(display.contentWidth/1334,display.contentHeight/750)
+		table.insert(o.sprites, sprite)
+	elseif(g == "avatar3")then
+		o.width = 96
+		o.height = 40
+		local spriteoptions = {
+			frames = {
+				{x = 0, y = 40, width = 92, height = 36}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/friendly3.png", spriteoptions)
+		local spriteSequence = {
+			name = "avatar3",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		--Physics.addBody(sprite,"dynamic",{outline=graphics.newOutline(4,spriteSheet,1)})
+		Physics.addBody(sprite,"dynamic")
+		sprite.isSensor = true
+		sprite.gravityScale = 0
+		sprite:scale(display.contentWidth/1334,display.contentHeight/750)
+		table.insert(o.sprites, sprite)
 	elseif(g == "title")then
 		o.width = 1500
 		o.height = 1500
@@ -664,7 +708,7 @@ function Graphic:new (o, x, y, g, p)    --constructor
 		o.height = 20*2
 		local spriteoptions = {
 			frames = {
-				{x = 71, y = 111, width = 64, height = 20}
+				{x = 72, y = 111, width = 64, height = 20}
 			}
 		}
 		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
@@ -700,12 +744,66 @@ function Graphic:new (o, x, y, g, p)    --constructor
 		o.height = 20*2
 		local spriteoptions = {
 			frames = {
-				{x = 69, y = 133, width = 64, height = 20}
+				{x = 70, y = 133, width = 64, height = 20}
 			}
 		}
 		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
 		local spriteSequence = {
 			name = "lvlbutton3",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
+		table.insert(o.sprites, sprite)
+	elseif(g == "shipbutton1")then
+		o.width = 72*2
+		o.height = 20*2
+		local spriteoptions = {
+			frames = {
+				{x = 50, y = 46, width = 54, height = 20}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
+		local spriteSequence = {
+			name = "shipbutton1",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
+		table.insert(o.sprites, sprite)
+	elseif(g == "shipbutton2")then
+		o.width = 72*2
+		o.height = 20*2
+		local spriteoptions = {
+			frames = {
+				{x = 106, y = 46, width = 54, height = 20}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
+		local spriteSequence = {
+			name = "shipbutton2",
+			start = 1,
+			count = 1,
+			loopCount = 0
+		}
+		local sprite = display.newSprite(spriteSheet,spriteSequence)
+		sprite:scale(2*display.contentWidth/1334,2*display.contentHeight/750)
+		table.insert(o.sprites, sprite)
+	elseif(g == "shipbutton3")then
+		o.width = 72*2
+		o.height = 20*2
+		local spriteoptions = {
+			frames = {
+				{x = 124, y = 90, width = 54, height = 20}
+			}
+		}
+		local spriteSheet = graphics.newImageSheet("Assets/Sprites/buttons.png", spriteoptions)
+		local spriteSequence = {
+			name = "shipbutton3",
 			start = 1,
 			count = 1,
 			loopCount = 0

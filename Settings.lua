@@ -15,13 +15,14 @@ local Settings = {}
 local music = true
 local sfx = true
 local level = 1
+local ship = 1
 
 function Settings:new (o)    --constructor
 	o = o or {}
 	setmetatable(o, self)
 	self.__index = self
 	
-	self.values = {true, true, 1} --default music on, sfx on, level 1
+	self.values = {true, true, 1, 1} --default music on, sfx on, level 1
 
 	return o
 end
@@ -56,6 +57,7 @@ function Settings:Update()
 		sfx = false
 	end
 	level = self.values[3]
+	ship = self.values[4]
 end
 
 function Settings:IsMusic()
@@ -68,6 +70,10 @@ end
 
 function Settings:WhatLevel()
 	return level
+end
+
+function Settings:WhatShip()
+	return ship
 end
 
 return Settings

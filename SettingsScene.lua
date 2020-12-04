@@ -13,6 +13,7 @@ local scene = composer.newScene()
 local MenuButton = require("MenuButton")
 local OptionButton = require("OptionButton")
 local Graphic = require("Graphic")
+local json = require("json")
  
 -- "scene:create()"
 function scene:create( event )
@@ -35,13 +36,21 @@ end
 		else
 			button:ChangeGraphic(Graphic:new({},0,0,"sfxbutton2"), id, self)
 		end
-	else
+	elseif(id == 3)then
 		if(value == 1)then
 			button:ChangeGraphic(Graphic:new({},0,0,"lvlbutton1"), id, self)
 		elseif(value == 2)then
 			button:ChangeGraphic(Graphic:new({},0,0,"lvlbutton2"), id, self)
 		else
 			button:ChangeGraphic(Graphic:new({},0,0,"lvlbutton3"), id, self)
+		end
+	elseif(id == 4)then
+		if(value == 1)then
+			button:ChangeGraphic(Graphic:new({},0,0,"shipbutton1"), id, self)
+		elseif(value == 2)then
+			button:ChangeGraphic(Graphic:new({},0,0,"shipbutton2"), id, self)
+		else
+			button:ChangeGraphic(Graphic:new({},0,0,"shipbutton3"), id, self)
 		end
 	end
  end
@@ -56,20 +65,49 @@ function scene:show( event )
    if ( phase == "will" ) then
 
 	local Settings = Settings
+	
+		local inpath = system.pathForFile("AirDefender.settings.json", system.DocumentsDirectory)
+		local infile, errorstring = io.open(inpath, "r")
+		
+		if(not infile)then
+			print("could not read settings file")
+		else
+			local instring
+			local filedata
+			for line in infile:lines() do
+				instring = line
+				print(instring)
+			end
+			if(instring ~= nil)then
+				filedata = json.decode(instring)
+			end
+			if(filedata ~= nil)then
+				print("settings file was not empty")
+				print (filedata)
+				for i,j in pairs(filedata) do
+					print(i)
+					print(j)
+					Settings:Set(i, j)
+				end
+			else
+				print("settings file was empty")
+			end
+			io.close(infile)
+		end
 
 		background = Graphic:new({},0,0,"title")
 		background:SetX(display.contentWidth/2)
 		background:SetY(display.contentHeight/2 - (80 * display.contentHeight/750))
 		
    		title = MenuButton:new(o, 0, "TitleScene", Graphic:new({},0,0,"backbutton"),self)
-   		title:SetPos(display.contentCenterX + (400*display.contentWidth/1334), display.contentCenterY + (250*display.contentHeight/750))
+   		title:SetPos(display.contentCenterX + (500*display.contentWidth/1334), display.contentCenterY + (250*display.contentHeight/750))
 		
 		if(Settings:Get(1)==true)then
 			musicsetting = OptionButton:new(o, 1, Graphic:new({},0,0,"musicbutton1"),self)
 		else
 			musicsetting = OptionButton:new(o, 1, Graphic:new({},0,0,"musicbutton2"),self)
 		end
-   		musicsetting:SetPos(display.contentCenterX - (400*display.contentWidth/1334), display.contentCenterY + (250*display.contentHeight/750))
+   		musicsetting:SetPos(display.contentCenterX - (500*display.contentWidth/1334), display.contentCenterY + (250*display.contentHeight/750))
 
 
 		if(Settings:Get(2)==true)then
@@ -77,7 +115,7 @@ function scene:show( event )
 		else
 			sfxsetting = OptionButton:new(o, 2, Graphic:new({},0,0,"sfxbutton2"),self)
 		end
-   		sfxsetting:SetPos(display.contentCenterX - (125*display.contentWidth/1334), display.contentCenterY + (250*display.contentHeight/750))
+   		sfxsetting:SetPos(display.contentCenterX - (250*display.contentWidth/1334), display.contentCenterY + (250*display.contentHeight/750))
 
 		if(Settings:Get(3)==1)then
 			levelsetting = OptionButton:new(o, 3, Graphic:new({},0,0,"lvlbutton1"),self)
@@ -86,7 +124,18 @@ function scene:show( event )
 		else
 			levelsetting = OptionButton:new(o, 3, Graphic:new({},0,0,"lvlbutton3"),self)
 		end
-   		levelsetting:SetPos(display.contentCenterX + (125*display.contentWidth/1334), display.contentCenterY + (250*display.contentHeight/750))
+   		levelsetting:SetPos(display.contentCenterX + (0*display.contentWidth/1334), display.contentCenterY + (250*display.contentHeight/750))
+   
+		
+		if(Settings:Get(4)==1)then
+			shipsetting = OptionButton:new(o, 4, Graphic:new({},0,0,"shipbutton1"),self)
+		elseif(Settings:Get(4)==2)then
+			shipsetting = OptionButton:new(o, 4, Graphic:new({},0,0,"shipbutton2"),self)
+		else
+			shipsetting = OptionButton:new(o, 4, Graphic:new({},0,0,"shipbutton3"),self)
+		end
+   		shipsetting:SetPos(display.contentCenterX + (250*display.contentWidth/1334), display.contentCenterY + (250*display.contentHeight/750))
+   
    
    elseif ( phase == "did" ) then
    
@@ -103,6 +152,18 @@ function scene:hide( event )
    
    elseif ( phase == "did" ) then
    
+		local outpath = system.pathForFile("AirDefender.settings.json", system.DocumentsDirectory)
+		local outfile, errorString = io.open(outpath, "w")
+		
+		if (not outfile) then
+			print("File error: " .. errorString)
+		else
+			outfile:write(json.encode({ Settings:Get(1),Settings:Get(2),Settings:Get(3),Settings:Get(4) }))
+			--outfile:write("")
+			--print("Wrote to file")
+			io.close(outfile)
+		end
+   
 	local sceneGroup = self.view
 	title:Destroy()
 	title=nil
@@ -112,6 +173,8 @@ function scene:hide( event )
 	sfxsetting=nil
 	levelsetting:Destroy()
 	levelsetting=nil
+	shipsetting:Destroy()
+	shipsetting=nil
 	background:Destroy()
  
    end

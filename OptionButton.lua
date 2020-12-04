@@ -45,6 +45,14 @@ function OptionButton:new(o, i, g, p)    --constructor
 				Settings:Set(3, 1)
 				value = Settings:Get(i)
 			end
+		elseif (i == 4) then
+			if (value == 1) or (value == 2) then
+				Settings:Set(4, value + 1)
+				value = Settings:Get(i)
+			else
+				Settings:Set(4, 1)
+				value = Settings:Get(i)
+			end
 		end
 		Settings:Update()
 		p:ChangeButton(i,value,o)
@@ -78,6 +86,14 @@ function OptionButton:ChangeGraphic(g, i, p)
 				value = Settings:Get(i)
 			else
 				Settings:Set(3, 1)
+				value = Settings:Get(i)
+			end
+		elseif (i == 4) then
+			if (value == 1) or (value == 2) then
+				Settings:Set(4, value + 1)
+				value = Settings:Get(i)
+			else
+				Settings:Set(4, 1)
 				value = Settings:Get(i)
 			end
 		end
