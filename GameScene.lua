@@ -219,12 +219,21 @@ function UpdateGame()
 			end
 		end
 		
-		for i, j in ipairs(projectiles) do
+		local n = #projectiles
+		for i=1,n,1 do
+		--print("updating projectile")
+			local j = projectiles[n-(i-1)]
 			j:Update()
-			if(j.explosion~=nil)then
-				print("Exploded!")
+		--print(j:GetPosX())
+			if(j:GetPosX() > display.contentWidth or j:GetPosY() > display.contentHeight)then
+				--print("it went too far!")
+				table.remove(projectiles, n-(i-1))
+				j:Destroy()
+			elseif(j:BulletType() ~= "defualt" and j:HasExploded() == true)then
+				--print("Exploded!")
 				projectiles[i] = j.explosion
 				j:Destroy()
+				--print("cleaned up bombshell")
 			elseif(j.isBomb ~= nil and j.GetPosY()~= nil and j.GetPosY() > display.contentHeight*9/10)then
 				j:Explode()
 			elseif(j.graphics ~= nil
@@ -234,7 +243,8 @@ function UpdateGame()
 					or j:GetPosY() > display.contentHeight
 					or j:GetPosY() < 0)
 			)then
-				table.remove(projectiles, i)
+				print("it went too far!")
+				table.remove(projectiles, n-(i-1))
 				j:Destroy()
 			--[[else
 				for k,l in ipairs(enemies)do
@@ -480,13 +490,13 @@ function scene:show( event )
 	playerAvatar:SetPos(display.contentWidth/(6), display.contentHeight/(2))
 	
 	pause = MenuButton:new({}, 1, "PauseScene", Graphic:new({},0,0,"pausebutton"))
-	pause:SetPos((display.contentWidth/(16)), (display.contentHeight*((6/10))) - (pause.interface:GetHeight()/(2)) - (display.contentHeight/(9)))
+	pause:SetPos((display.contentWidth/(14)), (display.contentHeight*((6/10))) - (pause.interface:GetHeight()/(2)) - (display.contentHeight/(9)))
 	
 	fire = FireButton:new({},Graphic:new({},0,0,"firebutton"))
-	fire:SetPos((display.contentWidth/(16)), (display.contentHeight*((4/10))) - (fire.interface:GetHeight()/(2)) - (display.contentHeight/(9)))
+	fire:SetPos((display.contentWidth/(14)), (display.contentHeight*((4/10))) - (fire.interface:GetHeight()/(2)) - (display.contentHeight/(9)))
 	
 	bomb = FireButton:new({}, Graphic:new({},0,0,"bombbutton"))
-	bomb:SetPos((display.contentWidth/(16)), (display.contentHeight*((5/10))) - (fire.interface:GetHeight()/(2)) - (display.contentHeight/(9)))
+	bomb:SetPos((display.contentWidth/(14)), (display.contentHeight*((5/10))) - (fire.interface:GetHeight()/(2)) - (display.contentHeight/(9)))
 	
 	
 	exiting = false
@@ -533,7 +543,7 @@ function scene:show( event )
 	timerDefault =
 	{
 		text = timerDefualtText,
-		x = 90*xScale,
+		x = 160*xScale,
 		y = 84*yScale,
 		fontSize = 24*xScale,
 		width = 200*xScale,
@@ -545,7 +555,7 @@ function scene:show( event )
 	scoreDefault =
 	{
 		text = scoreDefualtText,
-		x = 90*xScale,
+		x = 160*xScale,
 		y = 56*yScale,
 		width = 200*xScale,
 		fontSize = 24*xScale,
@@ -557,7 +567,7 @@ function scene:show( event )
 	healthDefault =
 	{
 		text = healthDefualtText,
-		x = 90*xScale,
+		x = 160*xScale,
 		y = 112*yScale,
 		width = 200*xScale,
 		fontSize = 24*xScale,

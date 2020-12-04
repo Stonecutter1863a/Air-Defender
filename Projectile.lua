@@ -9,15 +9,48 @@
 ]]
 local Projectile = {}
 
---[[function Projectile:new(o)
-	
-	local g = display.newRect(0, 0, 100, 100)
+function Projectile:new(o)
+	local Graphic = require("Graphic")
+	local g = Graphic:new({},0,0,"projectile")
 	g:setFillColor(1,1,1)
 	
-	self = Combatant:new(o,1,false,0,1,1,g)
+	o = o or {}
+	setmetatable(o, self)
+	self.__index = self
 	
+	o.aimY = 0
+	o.aimX = 1
+	local s = 2
+	local x = 0
+	local y = 0
+	
+	o.graphic = g
+	o.sfx = sfx
+	o.topspeed = 2
+	o.graphic:SetY(y)
+	o.graphic:SetX(x)
+	
+
+	--[[function o.Reset()
+		o.graphic.sprites[1]:setLinearVelocity(0,0)
+		o.graphic.sprites[1]:applyForce((dx * s*display.contentWidth/1334),(dy * s*display.contentHeight/750),o.graphic:GetX(),o.graphic:GetY())
+	end]]
+	
+	function o.collide(event)
+		--if(event.phase == "end")then
+			--timer.performWithDelay(30,o.Reset,1)
+		--end
+		if(--[[o.graphic.sprites[1]:getAngularVelocity() < 1 and]] event.other.tag == "enemy")then
+			o.graphic.sprites[1]:applyAngularImpulse(1)
+		end
+	end
+	o.graphic.sprites[1]:applyForce((dx * s*display.contentWidth/1334),(dy * s*display.contentHeight/750), x,y)
+	
+	o.graphic:addEventListener("collision", o.collide)
+	--timer.performWithDelay(2, o.regAncestry)
 	return o
-end]]
+	
+end
 
 function Projectile:new(o,x,y,dy,dx,sfx,s,g)	--## needs to play sfx
 	o = o or {}
@@ -61,12 +94,16 @@ function Projectile:Update()
 		--self:Reset()
 end
 
+function Projectile:BulletType()
+	return "defualt"
+end
+
 function Projectile:GetPosX()
-	return self.graphic:GetX()
+	return self.graphic.sprites[1].x
 end
 function Projectile:GetPosY()
 	if(self ~= nil)then
-		return self.graphic:GetY()
+		return self.graphic.sprites[1].y
 	else
 		return nil
 	end
