@@ -50,7 +50,7 @@ end
 		elseif(value == 2)then
 			button:ChangeGraphic(Graphic:new({},0,0,"shipbutton2"), id, self)
 		else
-			button:ChangeGraphic(Graphic:new({},0,0,"shipbutton3"), id, self)
+			button:ChangeGraphic(Graphic:new({},0,0,"lvlbutton3"), id, self)
 		end
 	end
  end
@@ -64,8 +64,36 @@ function scene:show( event )
  
    if ( phase == "will" ) then
 
-	local Settings = Settings
+	local Settings = event.params.settings
 	
+		local inpath = system.pathForFile("AirDefender.settings.json", system.DocumentsDirectory)
+		local infile, errorstring = io.open(inpath, "r")
+		
+		if(not infile)then
+			print("could not read settings file")
+		else
+			local instring
+			local filedata
+			for line in infile:lines() do
+				instring = line
+				print(instring)
+			end
+			if(instring ~= nil)then
+				filedata = json.decode(instring)
+			end
+			if(filedata ~= nil)then
+				print("settings file was not empty")
+				print (filedata)
+				for i,j in pairs(filedata) do
+					print(i)
+					print(j)
+					Settings:Set(i, j)
+				end
+			else
+				print("settings file was empty")
+			end
+			io.close(infile)
+		end
 
 		background = Graphic:new({},0,0,"title")
 		background:SetX(display.contentWidth/2)

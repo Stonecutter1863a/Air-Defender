@@ -19,7 +19,7 @@ local xScale = display.contentWidth/1334
 local yScale = display.contentHeight/750
 
 local music
-local settings
+local settings = nil
 local play
 local options
 local credits
@@ -39,35 +39,6 @@ function scene:show( event )
    local phase = event.phase
  
    if ( phase == "will" ) then
-   
-		local inpath = system.pathForFile("AirDefender.settings.json", system.DocumentsDirectory)
-		local infile, errorstring = io.open(inpath, "r")
-		
-		if(not infile)then
-			print("could not read settings file")
-		else
-			local instring
-			local filedata
-			for line in infile:lines() do
-				instring = line
-				print(instring)
-			end
-			if(instring ~= nil)then
-				filedata = json.decode(instring)
-			end
-			if(filedata ~= nil)then
-				print("settings file was not empty")
-				print (filedata)
-				for i,j in pairs(filedata) do
-					print(i)
-					print(j)
-					Settings:Set(i, j)
-				end
-			else
-				print("settings file was empty")
-			end
-			io.close(infile)
-		end
 		
 		timer.cancel("UpdateGame")
 		timer.cancel("Update")
@@ -78,6 +49,38 @@ function scene:show( event )
 			settings.level = 1
 			settings.sfx = true
 			settings.music = true
+			settings.ship = 1
+			local Settings = settings
+			local inpath = system.pathForFile("AirDefender.settings.json", system.DocumentsDirectory)
+			local infile, errorstring = io.open(inpath, "r")
+		
+			if(not infile)then
+				print("could not read settings file")
+			else
+					local instring
+					local filedata
+					for line in infile:lines() do
+						instring = line
+						print(instring)
+					end
+					if(instring ~= nil)then
+						filedata = json.decode(instring)
+					end
+					if(filedata ~= nil)then
+						print("settings file was not empty")
+						print (filedata)
+						for i,j in pairs(filedata) do
+							print(i)
+							print(j)
+							Settings:Set(i, j)
+						end
+					else
+						print("settings file was empty")
+					end
+					io.close(infile)
+					Settings:Update()
+			end
+		
 		end
 
 		--background = display.newImageRect("Assets/Sprites/title_screen.png", display.contentWidth, display.contentWidth)
