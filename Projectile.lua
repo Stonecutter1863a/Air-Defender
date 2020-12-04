@@ -78,6 +78,9 @@ function Projectile:new(o,x,y,dy,dx,sfx,s,g)	--## needs to play sfx
 		--end
 		if(--[[o.graphic.sprites[1]:getAngularVelocity() < 1 and]] event.other.tag == "enemy")then
 			o.graphic.sprites[1]:applyAngularImpulse(1)
+			if(o:BulletType() == "bomb")then
+				o:Explode()
+			end
 		end
 	end
 	o.graphic.sprites[1]:applyForce((dx * s*display.contentWidth/1334),(dy * s*display.contentHeight/750), x,y)

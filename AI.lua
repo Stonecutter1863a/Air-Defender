@@ -26,7 +26,7 @@ end
 
 function AI:Update()
 	if(self.aitype == 1)then
-		self.phase = self.phase + 50
+		self.phase = self.phase + 1
 		return{0,self.phase * math.pi}
 	else
 		return nil
